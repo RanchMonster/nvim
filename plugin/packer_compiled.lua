@@ -49,8 +49,8 @@ local function save_profiles(threshold)
 end
 
 time([[Luarocks path setup]], true)
-local package_path_str = "/home/Jacob/.cache/nvim/packer_hererocks/2.1.1713484068/share/lua/5.1/?.lua;/home/Jacob/.cache/nvim/packer_hererocks/2.1.1713484068/share/lua/5.1/?/init.lua;/home/Jacob/.cache/nvim/packer_hererocks/2.1.1713484068/lib/luarocks/rocks-5.1/?.lua;/home/Jacob/.cache/nvim/packer_hererocks/2.1.1713484068/lib/luarocks/rocks-5.1/?/init.lua"
-local install_cpath_pattern = "/home/Jacob/.cache/nvim/packer_hererocks/2.1.1713484068/lib/lua/5.1/?.so"
+local package_path_str = "/home/Jacob/.cache/nvim/packer_hererocks/2.1.1734355927/share/lua/5.1/?.lua;/home/Jacob/.cache/nvim/packer_hererocks/2.1.1734355927/share/lua/5.1/?/init.lua;/home/Jacob/.cache/nvim/packer_hererocks/2.1.1734355927/lib/luarocks/rocks-5.1/?.lua;/home/Jacob/.cache/nvim/packer_hererocks/2.1.1734355927/lib/luarocks/rocks-5.1/?/init.lua"
+local install_cpath_pattern = "/home/Jacob/.cache/nvim/packer_hererocks/2.1.1734355927/lib/lua/5.1/?.so"
 if not string.find(package.path, package_path_str, 1, true) then
   package.path = package.path .. ';' .. package_path_str
 end
@@ -121,7 +121,7 @@ _G.packer_plugins = {
     url = "https://github.com/nvim-telescope/telescope.nvim"
   },
   ["toggleterm.nvim"] = {
-    config = { "\27LJ\2\nÍ\1\0\0\4\0\t\0\r6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0006\3\4\0009\3\5\0039\3\6\3=\3\6\0025\3\a\0=\3\b\2B\0\2\1K\0\1\0\15float_opts\1\0\2\14title_pos\tleft\fboarder\vcurved\nshell\6o\bvim\1\0\5\15float_opts\0\nshell\0\16auto_scroll\2\17persist_mode\2\14direction\nfloat\nsetup\15toggleterm\frequire\0" },
+    config = { "\27LJ\2\nÍ\1\0\0\4\0\t\0\r6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0006\3\4\0009\3\5\0039\3\6\3=\3\6\0025\3\a\0=\3\b\2B\0\2\1K\0\1\0\15float_opts\1\0\2\14title_pos\tleft\fboarder\vcurved\nshell\6o\bvim\1\0\5\17persist_mode\2\15float_opts\0\16auto_scroll\2\nshell\0\14direction\nfloat\nsetup\15toggleterm\frequire\0" },
     loaded = true,
     path = "/home/Jacob/.local/share/nvim/site/pack/packer/start/toggleterm.nvim",
     url = "https://github.com/akinsho/toggleterm.nvim"
@@ -160,7 +160,7 @@ try_loadstring("\27LJ\2\n5\0\0\3\0\3\0\0056\0\0\0009\0\1\0'\2\2\0B\0\2\1K\0\1\0\
 time([[Config for shadotheme]], false)
 -- Config for: toggleterm.nvim
 time([[Config for toggleterm.nvim]], true)
-try_loadstring("\27LJ\2\nÍ\1\0\0\4\0\t\0\r6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0006\3\4\0009\3\5\0039\3\6\3=\3\6\0025\3\a\0=\3\b\2B\0\2\1K\0\1\0\15float_opts\1\0\2\14title_pos\tleft\fboarder\vcurved\nshell\6o\bvim\1\0\5\15float_opts\0\nshell\0\16auto_scroll\2\17persist_mode\2\14direction\nfloat\nsetup\15toggleterm\frequire\0", "config", "toggleterm.nvim")
+try_loadstring("\27LJ\2\nÍ\1\0\0\4\0\t\0\r6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0006\3\4\0009\3\5\0039\3\6\3=\3\6\0025\3\a\0=\3\b\2B\0\2\1K\0\1\0\15float_opts\1\0\2\14title_pos\tleft\fboarder\vcurved\nshell\6o\bvim\1\0\5\17persist_mode\2\15float_opts\0\16auto_scroll\2\nshell\0\14direction\nfloat\nsetup\15toggleterm\frequire\0", "config", "toggleterm.nvim")
 time([[Config for toggleterm.nvim]], false)
 
 _G._packer.inside_compile = false
