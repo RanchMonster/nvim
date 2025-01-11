@@ -1,3 +1,4 @@
+require( "Python.Automations.autoinit" )
 require( "Python.Automations.autoself" )
 require( "Python.Automations.autopass" )
 require( "Python.Automations.autotyping" )
