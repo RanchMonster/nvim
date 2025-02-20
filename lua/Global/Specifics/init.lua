@@ -1,1 +1,1 @@
-require( "Global.Specifics.TypeOutside" )
+-- require("Global.Specifics.typingGame")

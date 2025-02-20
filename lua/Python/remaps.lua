@@ -1,5 +1,9 @@
 vim.keymap.set("n", "<Leader>c", "mpyiwoif not <esc>pA:<enter>return<esc>`p")
 
+vim.keymap.set("n", "<leader>x", function()
+   vim.cmd("!python main.py")
+end)
+
 local function get_arg_node()
    local node = vim.treesitter.get_node { ignore_injections = false }
    if not node then

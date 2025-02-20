@@ -38,14 +38,12 @@ function auto_init()
       if not function_name_node then
          pos = vim.api.nvim_win_get_cursor(0)
          vim.api.nvim_win_set_cursor(0, { pos[1], pos[2] + 1 })
-         vim.api.nvim_feedkeys("t", "n", true)
          return
       end
-      local function_name = vim.treesitter.get_node_text(function_name_node)
+      local function_name = vim.treesitter.get_node_text(function_name_node, 0)
       if function_name == "__init__" then
          pos = vim.api.nvim_win_get_cursor(0)
          vim.api.nvim_win_set_cursor(0, { pos[1], pos[2] + 1 })
-         vim.api.nvim_feedkeys("t", "n", true)
          return
       end
    end
@@ -68,5 +66,6 @@ function auto_init()
 end
 
 vim.keymap.set("i", "t", function()
-   auto_init()
+   vim.api.nvim_feedkeys("t", "n", true)
+   -- auto_init()
 end)
