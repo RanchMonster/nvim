@@ -70,7 +70,7 @@ cmp.setup.cmdline(':', {
 })
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-require('lspconfig')['pyright'].setup {
+require('lspconfig')['basedpyright'].setup {
 	capabilities = capabilities
 }
 require('lspconfig')['rust_analyzer'].setup {
