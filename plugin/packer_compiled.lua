@@ -172,6 +172,11 @@ _G.packer_plugins = {
     path = "/home/Jacob/.local/share/nvim/site/pack/packer/start/plenary.nvim",
     url = "https://github.com/nvim-lua/plenary.nvim"
   },
+  ["refactoring.nvim"] = {
+    loaded = true,
+    path = "/home/Jacob/.local/share/nvim/site/pack/packer/start/refactoring.nvim",
+    url = "https://github.com/ThePrimeagen/refactoring.nvim"
+  },
   ["rose-pine"] = {
     loaded = true,
     path = "/home/Jacob/.local/share/nvim/site/pack/packer/start/rose-pine",

@@ -3,6 +3,13 @@ vim.cmd [[packadd packer.nvim]]
 return require('packer').startup(function(use)
    -- Packer can manage itself
 
+   use {
+    "ThePrimeagen/refactoring.nvim",
+    requires = {
+        {"nvim-lua/plenary.nvim"},
+        {"nvim-treesitter/nvim-treesitter"}
+      }
+   }
    use 'neovim/nvim-lspconfig'
    use 'hrsh7th/cmp-nvim-lsp'
    use 'hrsh7th/cmp-buffer'
