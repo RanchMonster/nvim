@@ -22,9 +22,6 @@ vim.keymap.set("n", "<leader>ts", function()
    vim.cmd("TSP")
 end)
 vim.keymap.set("v", "\"", ":s/\\%V.*\\%V./\"&\"<enter>")
-vim.keymap.set("n", "<leader>r", function()
-   vim.api.nvim_feedkeys("viw:%s/\\%V.*\\%V./", "n", true)
-end)
 vim.keymap.set("n", "<tab>", ">>")
 vim.keymap.set("n", "<S-Tab>", "<<")
 vim.keymap.set("v", "<S-Tab>", "<")
@@ -47,13 +44,9 @@ vim.keymap.set("i", "<C-c>", "<esc>")
 vim.keymap.set("x", "<leader>p", [["_dp]])
 -- next greatest remap ever :
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
-
 vim.keymap.set("n", "<leader>Y", [["+Y]])
 vim.keymap.set({ "n", "v" }, "<leader>d", "\"_d")
-vim.keymap.set({ "n", "i" }, "<A-u>", function() vim.cmd("undo") end)
-vim.keymap.set({ "n", "i" }, "<A-d>",function() vim.cmd("redo") end)
 
-vim.keymap.set({ "n", "i" }, "<C-s>", function() vim.cmd("w") end)
 -- This is going to get me cancelled
 vim.keymap.set("i", "<C-c>", "<Esc>")
 
@@ -73,4 +66,3 @@ vim.keymap.set("n", "<leader><leader>", function()
    vim.cmd("so")
    vim.cmd("PackerSync")
 end)
-
