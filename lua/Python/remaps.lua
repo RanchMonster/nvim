@@ -1,7 +1,7 @@
 vim.keymap.set("n", "<Leader>c", "mpyiwoif not <esc>pA:<enter>return<esc>`p")
 
 vim.keymap.set("n", "<leader>x", function()
-   vim.cmd("!python main.py")
+   vim.cmd("!python src/main.py")
 end)
 
 local function get_arg_node()

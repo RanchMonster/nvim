@@ -5,3 +5,6 @@ require( "Global.set" )
 require( "Global.functions" )
 require( "Global.Specifics" )
 require( "Global.TSFunctions" )
+
+require( "Global.Github" )
+
