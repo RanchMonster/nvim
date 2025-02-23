@@ -74,6 +74,29 @@ vim.keymap.set("n", "<leader><leader>", function()
    vim.cmd("PackerSync")
 end)
 
+-- Tab controls I add so we can make and close tabs fast so we can edit many files at a time with needing to reopen them
+vim.keymap.set({"n"},"<leader>t",function ()
+   vim.cmd("tabnew")
+end)
+
+
+vim.keymap.set({"n"},"<leader>T",function ()
+   vim.cmd("tabclose")
+end)
+-- Quick next tab
+vim.keymap.set({"n"},"<leader>nt",function()
+
+vim.cmd("tabnext")
+
+end)
+-- Quick back tab
+vim.keymap.set({"n"},"<leader>bt",function()
+
+vim.cmd("tabprevious")
+
+end)
+
+
 -- Home functionalilty
 vim.keymap.set( { "n", "v", "i" }, "<Home>", function()
    pos1 = vim.api.nvim_win_get_cursor(0)
