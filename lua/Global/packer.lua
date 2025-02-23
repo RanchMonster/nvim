@@ -16,7 +16,11 @@ return require('packer').startup(function(use)
    use 'hrsh7th/cmp-path'
    use 'hrsh7th/cmp-cmdline'
    use 'hrsh7th/nvim-cmp'
-   use "Mofiqul/vscode.nvim"
+   use {"Mofiqul/vscode.nvim",
+      config = function()
+         vim.cmd("colorscheme vscode")
+      end
+      }
    use "github/copilot.vim"
    use "tpope/vim-surround"
    use { "folke/lazydev.nvim",
@@ -57,12 +61,7 @@ return require('packer').startup(function(use)
       requires = { 'nvim-tree/nvim-web-devicons', opt = true }
    }
    use 'wbthomason/packer.nvim'
-   use({
-      "Shadorain/shadotheme",
-      config = function()
-         vim.cmd("colorscheme shado")
-      end
-   })
+
    use {
       'williamboman/mason.nvim',
       run = ':MasonUpdate' -- Optional: run :MasonUpdate after installation/update

@@ -182,12 +182,6 @@ _G.packer_plugins = {
     path = "/home/linuxman/.local/share/nvim/site/pack/packer/start/rose-pine",
     url = "https://github.com/rose-pine/neovim"
   },
-  shadotheme = {
-    config = { "\27LJ\2\n5\0\0\3\0\3\0\0056\0\0\0009\0\1\0'\2\2\0B\0\2\1K\0\1\0\22colorscheme shado\bcmd\bvim\0" },
-    loaded = true,
-    path = "/home/linuxman/.local/share/nvim/site/pack/packer/start/shadotheme",
-    url = "https://github.com/Shadorain/shadotheme"
-  },
   ["telescope.nvim"] = {
     loaded = true,
     path = "/home/linuxman/.local/share/nvim/site/pack/packer/start/telescope.nvim",
@@ -224,6 +218,7 @@ _G.packer_plugins = {
     url = "https://github.com/lukas-reineke/virt-column.nvim"
   },
   ["vscode.nvim"] = {
+    config = { "\27LJ\2\n6\0\0\3\0\3\0\0056\0\0\0009\0\1\0'\2\2\0B\0\2\1K\0\1\0\23colorscheme vscode\bcmd\bvim\0" },
     loaded = true,
     path = "/home/linuxman/.local/share/nvim/site/pack/packer/start/vscode.nvim",
     url = "https://github.com/Mofiqul/vscode.nvim"
@@ -231,10 +226,10 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
--- Config for: shadotheme
-time([[Config for shadotheme]], true)
-try_loadstring("\27LJ\2\n5\0\0\3\0\3\0\0056\0\0\0009\0\1\0'\2\2\0B\0\2\1K\0\1\0\22colorscheme shado\bcmd\bvim\0", "config", "shadotheme")
-time([[Config for shadotheme]], false)
+-- Config for: vscode.nvim
+time([[Config for vscode.nvim]], true)
+try_loadstring("\27LJ\2\n6\0\0\3\0\3\0\0056\0\0\0009\0\1\0'\2\2\0B\0\2\1K\0\1\0\23colorscheme vscode\bcmd\bvim\0", "config", "vscode.nvim")
+time([[Config for vscode.nvim]], false)
 vim.cmd [[augroup packer_load_aucmds]]
 vim.cmd [[au!]]
   -- Filetype lazy-loads
