@@ -74,3 +74,13 @@ vim.keymap.set("n", "<leader><leader>", function()
    vim.cmd("PackerSync")
 end)
 
+-- Home functionalilty
+vim.keymap.set( { "n", "v", "i" }, "<Home>", function()
+   pos1 = vim.api.nvim_win_get_cursor(0)
+   vim.cmd( "norm ^" )
+   pos2 = vim.api.nvim_win_get_cursor(0)
+   if pos1[2] == pos2[2] then
+      vim.cmd( "norm 0" )
+   end
+end)
+
