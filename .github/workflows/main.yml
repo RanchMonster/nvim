@@ -22,11 +22,11 @@ jobs:
       - name: Rebase josh branch onto master
         run: |
           git fetch origin
-          git checkout josh-config
+          git checkout josh_config
           git rebase origin/master
 
       - name: Push rebased branch
         run: |
-          git push origin josh-config --force
+          git push origin josh_config --force
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
