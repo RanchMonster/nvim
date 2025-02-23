@@ -174,7 +174,7 @@ _G.packer_plugins = {
   },
   ["refactoring.nvim"] = {
     loaded = true,
-    path = "/home/Jacob/.local/share/nvim/site/pack/packer/start/refactoring.nvim",
+    path = "/home/linuxman/.local/share/nvim/site/pack/packer/start/refactoring.nvim",
     url = "https://github.com/ThePrimeagen/refactoring.nvim"
   },
   ["rose-pine"] = {
