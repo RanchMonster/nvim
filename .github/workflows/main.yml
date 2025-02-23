@@ -19,14 +19,11 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
 
-      - name: Rebase josh branch onto master
+      - name: Rebase feature branch onto master with auto-resolve
         run: |
           git fetch origin
           git checkout josh_config
-          git rebase origin/master
-
-      - name: Push rebased branch
-        run: |
+          git rebase origin/master --strategy-option=theirs || (git rebase --abort && git reset --hard origin/josh_config)
           git push origin josh_config --force
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
