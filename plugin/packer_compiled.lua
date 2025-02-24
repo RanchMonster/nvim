@@ -127,6 +127,7 @@ _G.packer_plugins = {
     url = "https://github.com/hrsh7th/nvim-cmp"
   },
   ["nvim-lspconfig"] = {
+    config = { "\27LJ\2\ni\0\0\4\2\a\0\r6\0\0\0009\0\1\0009\0\2\0009\0\3\0005\2\4\0-\3\0\0009\3\2\3=\3\5\2-\3\1\0009\3\6\3=\3\6\2B\0\2\1K\0\1\0\0À\1À\aid\nbufnr\1\0\2\nbufnr\0\aid\0\vformat\bbuf\blsp\bvim‘\2\1\1\a\0\15\0\0276\1\0\0009\1\1\0019\1\2\0019\3\3\0009\3\4\3B\1\2\2\14\0\1\0X\2\1€2\0\17€9\2\5\1'\4\6\0B\2\2\2\15\0\2\0X\3\n€6\2\0\0009\2\a\0029\2\b\2'\4\t\0005\5\v\0009\6\n\0=\6\f\0053\6\r\0=\6\14\5B\2\3\0012\0\0€K\0\1\0K\0\1\0\rcallback\0\vbuffer\1\0\2\vbuffer\0\rcallback\0\bbuf\16BufWritePre\24nvim_create_autocmd\bapi\28textDocument/formatting\20supports_method\14client_id\tdata\21get_client_by_id\blsp\bvimø\2\1\0\6\0\19\0&6\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\0026\1\0\0'\3\3\0B\1\2\0029\1\4\0019\1\5\0015\3\6\0=\0\a\3B\1\2\0016\1\0\0'\3\3\0B\1\2\0029\1\b\0019\1\5\0015\3\t\0=\0\a\3B\1\2\0016\1\0\0'\3\3\0B\1\2\0029\1\n\0019\1\5\0015\3\v\0=\0\a\3B\1\2\0016\1\f\0009\1\r\0019\1\14\1'\3\15\0005\4\17\0003\5\16\0=\5\18\4B\1\3\1K\0\1\0\rcallback\1\0\1\rcallback\0\0\14LspAttach\24nvim_create_autocmd\bapi\bvim\1\0\1\17capabilities\0\18rust_analyzer\1\0\1\17capabilities\0\vlua_ls\17capabilities\1\0\1\17capabilities\0\nsetup\17basedpyright\14lspconfig\25get_lsp_capabilities\17cmp_nvim_lsp\frequire\0" },
     loaded = true,
     path = "/home/Jacob/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
     url = "https://github.com/neovim/nvim-lspconfig"
@@ -208,6 +209,11 @@ _G.packer_plugins = {
     path = "/home/Jacob/.local/share/nvim/site/pack/packer/start/vim-surround",
     url = "https://github.com/tpope/vim-surround"
   },
+  ["vim-vsnip"] = {
+    loaded = true,
+    path = "/home/Jacob/.local/share/nvim/site/pack/packer/start/vim-vsnip",
+    url = "https://github.com/hrsh7th/vim-vsnip"
+  },
   ["virt-column.nvim"] = {
     loaded = true,
     path = "/home/Jacob/.local/share/nvim/site/pack/packer/start/virt-column.nvim",
@@ -225,6 +231,10 @@ time([[Defining packer_plugins]], false)
 time([[Config for shadotheme]], true)
 try_loadstring("\27LJ\2\n5\0\0\3\0\3\0\0056\0\0\0009\0\1\0'\2\2\0B\0\2\1K\0\1\0\22colorscheme shado\bcmd\bvim\0", "config", "shadotheme")
 time([[Config for shadotheme]], false)
+-- Config for: nvim-lspconfig
+time([[Config for nvim-lspconfig]], true)
+try_loadstring("\27LJ\2\ni\0\0\4\2\a\0\r6\0\0\0009\0\1\0009\0\2\0009\0\3\0005\2\4\0-\3\0\0009\3\2\3=\3\5\2-\3\1\0009\3\6\3=\3\6\2B\0\2\1K\0\1\0\0À\1À\aid\nbufnr\1\0\2\nbufnr\0\aid\0\vformat\bbuf\blsp\bvim‘\2\1\1\a\0\15\0\0276\1\0\0009\1\1\0019\1\2\0019\3\3\0009\3\4\3B\1\2\2\14\0\1\0X\2\1€2\0\17€9\2\5\1'\4\6\0B\2\2\2\15\0\2\0X\3\n€6\2\0\0009\2\a\0029\2\b\2'\4\t\0005\5\v\0009\6\n\0=\6\f\0053\6\r\0=\6\14\5B\2\3\0012\0\0€K\0\1\0K\0\1\0\rcallback\0\vbuffer\1\0\2\vbuffer\0\rcallback\0\bbuf\16BufWritePre\24nvim_create_autocmd\bapi\28textDocument/formatting\20supports_method\14client_id\tdata\21get_client_by_id\blsp\bvimø\2\1\0\6\0\19\0&6\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\0026\1\0\0'\3\3\0B\1\2\0029\1\4\0019\1\5\0015\3\6\0=\0\a\3B\1\2\0016\1\0\0'\3\3\0B\1\2\0029\1\b\0019\1\5\0015\3\t\0=\0\a\3B\1\2\0016\1\0\0'\3\3\0B\1\2\0029\1\n\0019\1\5\0015\3\v\0=\0\a\3B\1\2\0016\1\f\0009\1\r\0019\1\14\1'\3\15\0005\4\17\0003\5\16\0=\5\18\4B\1\3\1K\0\1\0\rcallback\1\0\1\rcallback\0\0\14LspAttach\24nvim_create_autocmd\bapi\bvim\1\0\1\17capabilities\0\18rust_analyzer\1\0\1\17capabilities\0\vlua_ls\17capabilities\1\0\1\17capabilities\0\nsetup\17basedpyright\14lspconfig\25get_lsp_capabilities\17cmp_nvim_lsp\frequire\0", "config", "nvim-lspconfig")
+time([[Config for nvim-lspconfig]], false)
 vim.cmd [[augroup packer_load_aucmds]]
 vim.cmd [[au!]]
   -- Filetype lazy-loads
