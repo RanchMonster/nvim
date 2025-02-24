@@ -15,11 +15,6 @@ return require('packer').startup(function(use)
    use 'hrsh7th/cmp-path'
    use 'hrsh7th/cmp-cmdline'
    use 'hrsh7th/nvim-cmp'
-   use {"Mofiqul/vscode.nvim",
-      config = function()
-         vim.cmd("colorscheme vscode")
-      end
-      }
    use 'hrsh7th/vim-vsnip' -- I added this as it is needed for most lsp autocomplete which is something I think we both *should* use
    use "Mofiqul/vscode.nvim"
    use "github/copilot.vim"
@@ -63,7 +58,12 @@ return require('packer').startup(function(use)
       requires = { 'nvim-tree/nvim-web-devicons', opt = true }
    }
    use 'wbthomason/packer.nvim'
-
+   use({
+      "Shadorain/shadotheme",
+      config = function()
+         vim.cmd("colorscheme shado")
+      end
+   })
    use {
       'williamboman/mason.nvim',
       run = ':MasonUpdate' -- Optional: run :MasonUpdate after installation/update
