@@ -74,11 +74,6 @@ end
 time([[try_loadstring definition]], false)
 time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
-  ["blink.cmp"] = {
-    loaded = true,
-    path = "/home/Jacob/.local/share/nvim/site/pack/packer/start/blink.cmp",
-    url = "https://github.com/saghen/blink.cmp"
-  },
   ["cmp-buffer"] = {
     loaded = true,
     path = "/home/Jacob/.local/share/nvim/site/pack/packer/start/cmp-buffer",
@@ -103,11 +98,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/Jacob/.local/share/nvim/site/pack/packer/start/copilot.vim",
     url = "https://github.com/github/copilot.vim"
-  },
-  ["friendly-snippets"] = {
-    loaded = true,
-    path = "/home/Jacob/.local/share/nvim/site/pack/packer/start/friendly-snippets",
-    url = "https://github.com/rafamadriz/friendly-snippets"
   },
   harpoon = {
     loaded = true,

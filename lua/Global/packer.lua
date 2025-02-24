@@ -33,9 +33,10 @@ return require('packer').startup(function(use)
    use 'stevanmilic/nvim-lspimport'
    use { "neovim/nvim-lspconfig",
       config = function()
-         local capabilities = require("blink.cmp").get_lsp_capabilities()
-         require("lspconfig").pyright.setup { capabilities = capabilities }
+         local capabilities = require("cmp_nvim_lsp").get_lsp_capabilities()
+         require("lspconfig").basedpyright.setup { capabilities = capabilities }
          require("lspconfig").lua_ls.setup { capabilities = capabilities }
+         require("lspconfig").rust_analyzer.setup { capabilities = capabilities }
          vim.api.nvim_create_autocmd("LspAttach", {
             callback = function(args)
                local c = vim.lsp.get_client_by_id(args.data.client_id)
@@ -93,26 +94,4 @@ return require('packer').startup(function(use)
    use("theprimeagen/harpoon")
    use("mbbill/undotree")
    use("tpope/vim-fugitive")
-   use { "saghen/blink.cmp",
-      requires = "rafamadriz/friendly-snippets",
-      version = "v0.*",
-      opts = {
-         sources = {
-            default = { "lazydev", "lsp", "path", "snippits", "buffer" },
-            providers = {
-               lazydev = {
-                  name = "LazyDev",
-                  module = "lazydev.intergrations.blink",
-                  score_offsets = 100,
-               }
-            }
-         },
-         keymap = { present = "default" },
-         apperance = {
-            use_nvim_cmp_as_defualt = true,
-         },
-         signature = { enabled = true },
-      },
-      opts_extend = { "sources.defualt" },
-   }
 end)
