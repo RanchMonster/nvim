@@ -76,15 +76,6 @@ return require('packer').startup(function(use)
    }
    use({ "xiyaowong/transparent.nvim",
    })
-   use({
-      "lukas-reineke/virt-column.nvim",
-      opts =
-      {
-         char = "a",
-         virtcolumn = "10",
-         hilight = { "NonText" }
-      }
-   })
    use("nvim-treesitter/nvim-treesitter", { run = ":TSUpdate" })
    use("nvim-treesitter/playground")
    use("theprimeagen/harpoon")
