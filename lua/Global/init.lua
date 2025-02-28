@@ -6,5 +6,3 @@ require( "Global.functions" )
 require( "Global.Specifics" )
 require( "Global.TSFunctions" )
 require( "Global.Github" )
-require( "Global.autosave" )
-

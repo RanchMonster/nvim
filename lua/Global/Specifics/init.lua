@@ -1,1 +1,2 @@
--- require("Global.Specifics.typingGame")
+require( "Global.Specifics.mkproj" )
+require( "Global.Specifics.tagline" )

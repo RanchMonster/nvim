@@ -15,6 +15,31 @@ vim.keymap.set("n", "<leader>ft", function()
 	vim.cmd("Ex")
 end)
 vim.keymap.set("n", "<enter>", "mao<esc>`a")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 vim.keymap.set("n", "yp", "yyp")
 vim.keymap.set("n", "yP", "yyP")
 vim.keymap.set("n", "!", ":!")
