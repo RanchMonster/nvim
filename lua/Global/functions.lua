@@ -8,5 +8,5 @@ vim.api.nvim_create_user_command( "English", function()
    vim.opt.spelllang = "en_us"
    vim.opt.wrap = true
 
- end, { bang = false })
+end, { bang = false })
 
