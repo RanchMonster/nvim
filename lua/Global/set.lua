@@ -2,8 +2,7 @@ vim.opt.nu = true
 vim.opt.relativenumber = true
 vim.opt.colorcolumn = ""
 
-
-
+vim.opt.spelllang = "en_us"
 
 vim.opt.tabstop = 3
 vim.opt.softtabstop = 3
@@ -11,6 +10,8 @@ vim.opt.shiftwidth = 3
 vim.opt.expandtab = true
 
 vim.opt.smartindent = true
+
+vim.opt.hidden = true
 
 vim.opt.wrap = false
 

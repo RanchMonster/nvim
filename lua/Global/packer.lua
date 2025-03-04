@@ -4,6 +4,7 @@ return require('packer').startup(function(use)
 	-- Packer can manage itself
 	use 'wbthomason/packer.nvim'
 
+
 	-- LSP & Autocomplete
 	use 'neovim/nvim-lspconfig'
 	use 'williamboman/mason.nvim'
@@ -65,15 +66,5 @@ return require('packer').startup(function(use)
 				},
 			},
 		},
-	}
-	use 'stevanmilic/nvim-lspimport'
-	use {
-		'nvim-lualine/lualine.nvim',
-		requires = { 'nvim-tree/nvim-web-devicons', opt = true }
-	}
-	use 'wbthomason/packer.nvim'
-	use {
-		"williamboman/mason.nvim",
-		run = ":MasonUpdate",
 	}
 end)
