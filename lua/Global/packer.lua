@@ -48,32 +48,5 @@ return require('packer').startup(function(use)
    use {
       "williamboman/mason.nvim",
       run = ":MasonUpdate",
-      config = function()
-         require("mason").setup()
-         require("mason-lspconfig").setup {
-            automatic_installation = true,
-         }
-
-         local lspconfig = require("lspconfig")
-         local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-         require("mason-lspconfig").setup_handlers {
-            function(server_name) -- Auto-setup all installed LSPs
-               lspconfig[server_name].setup {
-                  capabilities = capabilities,
-                  on_attach = function(client, bufnr)
-                     if client.supports_method("textDocument/formatting") then
-                        vim.api.nvim_create_autocmd("BufWritePre", {
-                           buffer = bufnr,
-                           callback = function()
-                              vim.lsp.buf.format({ bufnr = bufnr })
-                           end,
-                        })
-                     end
-                  end,
-               }
-            end,
-         }
-      end,
    }
 end)

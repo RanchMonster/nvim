@@ -69,14 +69,38 @@ cmp.setup.cmdline(':', {
 	matching = { disallow_symbol_nonprefix_matching = false }
 })
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-require('lspconfig')['basedpyright'].setup {
-	capabilities = capabilities
-}
-require('lspconfig')['rust_analyzer'].setup {
-	capabilities = capabilities
+-- require('lspconfig')['basedpyright'].setup {
+-- 	capabilities = capabilities
+-- }
+-- require('lspconfig')['rust_analyzer'].setup {
+-- 	capabilities = capabilities
+-- }
+
+-- require('lspconfig')['lua_ls'].setup {
+--   capabilities = capabilities
+-- }
+require("mason").setup()
+require("mason-lspconfig").setup {
+   automatic_installation = true,
 }
 
-require('lspconfig')['lua_ls'].setup {
-  capabilities = capabilities
+local lspconfig = require("lspconfig")
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+require("mason-lspconfig").setup_handlers {
+   function(server_name) -- Auto-setup all installed LSPs
+      lspconfig[server_name].setup {
+         capabilities = capabilities,
+         on_attach = function(client, bufnr)
+            if client.supports_method("textDocument/formatting") then
+               vim.api.nvim_create_autocmd("BufWritePre", {
+                  buffer = bufnr,
+                  callback = function()
+                     vim.lsp.buf.format({ bufnr = bufnr })
+                  end,
+               })
+            end
+         end,
+      }
+   end,
 }
