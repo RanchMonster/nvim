@@ -70,10 +70,10 @@ cmp.setup.cmdline(':', {
 })
 
 -- require('lspconfig')['basedpyright'].setup {
--- 	capabilities = capabilities
+--   capabilities = capabilities
 -- }
 -- require('lspconfig')['rust_analyzer'].setup {
--- 	capabilities = capabilities
+--   capabilities = capabilities
 -- }
 
 -- require('lspconfig')['lua_ls'].setup {
@@ -81,26 +81,44 @@ cmp.setup.cmdline(':', {
 -- }
 require("mason").setup()
 require("mason-lspconfig").setup {
-   automatic_installation = true,
+	automatic_installation = true,
 }
 
 local lspconfig = require("lspconfig")
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
+-- Custom error handling with vim.notify
+local function notify_error(message)
+	vim.notify(message, vim.log.levels.ERROR)
+end
+
+local function notify_info(message)
+	vim.notify(message, vim.log.levels.INFO)
+end
 
 require("mason-lspconfig").setup_handlers {
-   function(server_name) -- Auto-setup all installed LSPs
-      lspconfig[server_name].setup {
-         capabilities = capabilities,
-         on_attach = function(client, bufnr)
-            if client.supports_method("textDocument/formatting") then
-               vim.api.nvim_create_autocmd("BufWritePre", {
-                  buffer = bufnr,
-                  callback = function()
-                     vim.lsp.buf.format({ bufnr = bufnr })
-                  end,
-               })
-            end
-         end,
-      }
-   end,
+	function(server_name) -- Auto-setup all installed LSPs
+		-- Use pcall to safely attempt to load each LSP server
+		local status, err = pcall(function()
+			lspconfig[server_name].setup {
+				capabilities = capabilities,
+				on_attach = function(client, bufnr)
+					if client.supports_method("textDocument/formatting") then
+						vim.api.nvim_create_autocmd("BufWritePre", {
+							buffer = bufnr,
+							callback = function()
+								vim.lsp.buf.format({ bufnr = bufnr })
+							end,
+						})
+					end
+				end,
+			}
+		end)
+
+		if status then
+			--debug only thing
+			-- notify_info("Successfully loaded LSP: " .. server_name) 
+		else
+			notify_error("Failed to load LSP " .. server_name .. ": " .. tostring(err))
+		end
+	end,
 }
