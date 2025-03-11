@@ -18,7 +18,7 @@ return require('packer').startup(function(use)
    use 'stevanmilic/nvim-lspimport'
 
    -- Additional Plugins
-   use "github/copilot.vim"
+   --use "github/copilot.vim"
    use "tpope/vim-surround"
    use { "folke/lazydev.nvim", ft = "lua" }
    use { "nvim-lualine/lualine.nvim", requires = { 'nvim-tree/nvim-web-devicons', opt = true } }
@@ -54,7 +54,7 @@ return require('packer').startup(function(use)
    use 'hrsh7th/nvim-cmp'
    use 'hrsh7th/vim-vsnip' -- I added this as it is needed for most lsp autocomplete which is something I think we both *should* use
    use "Mofiqul/vscode.nvim"
-   use "github/copilot.vim"
+   --use "github/copilot.vim"
    use "tpope/vim-surround"
    use { "folke/lazydev.nvim",
       ft = "lua",
@@ -99,7 +99,7 @@ return require('packer').startup(function(use)
    use 'stevanmilic/nvim-lspimport'
 
    -- Additional Plugins
-   use "github/copilot.vim"
+   --use "github/copilot.vim"
    use "tpope/vim-surround"
    use { "folke/lazydev.nvim", ft = "lua" }
    use { "nvim-lualine/lualine.nvim", requires = { 'nvim-tree/nvim-web-devicons', opt = true } }
