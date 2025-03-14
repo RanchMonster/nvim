@@ -79,6 +79,9 @@ cmp.setup.cmdline(':', {
 -- require('lspconfig')['lua_ls'].setup {
 --   capabilities = capabilities
 -- }
+require('lspconfig')['phpactor'].setup {
+   capabilities = capabilities
+}
 require("mason").setup()
 require("mason-lspconfig").setup {
    automatic_installation = true,
