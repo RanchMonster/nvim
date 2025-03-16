@@ -72,16 +72,12 @@ cmp.setup.cmdline(':', {
 -- require('lspconfig')['basedpyright'].setup {
 --   capabilities = capabilities
 -- }
--- require('lspconfig')['rust_analyzer'].setup {
---   capabilities = capabilities
--- }
-
 -- require('lspconfig')['lua_ls'].setup {
 --   capabilities = capabilities
 -- }
-require('lspconfig')['phpactor'].setup {
-   capabilities = capabilities
-}
+-- require('lspconfig')['phpactor'].setup {
+--    capabilities = capabilities
+-- }
 require("mason").setup()
 require("mason-lspconfig").setup {
    automatic_installation = true,
@@ -101,6 +97,9 @@ end
 require("mason-lspconfig").setup_handlers {
    function(server_name) -- Auto-setup all installed LSPs
       -- Use pcall to safely attempt to load each LSP server
+      if "rust_analyzer" == server_name then
+         return
+      end
       local status, err = pcall(function()
          lspconfig[server_name].setup {
             capabilities = capabilities,
@@ -123,5 +122,45 @@ require("mason-lspconfig").setup_handlers {
       else
          notify_error("Failed to load LSP " .. server_name .. ": " .. tostring(err))
       end
+   end,
+}
+-- Config rust lsp over here for full features
+lspconfig.rust_analyzer.setup {
+   capabilities = capabilities,
+   settings = {
+      ["rust-analyzer"] = {
+         check = {
+            command = "clippy", -- Use Clippy for better linting
+         },
+         cargo = {
+            allFeatures = true, -- Enable all features in Cargo.toml
+         },
+         procMacro = {
+            enable = true, -- Enable procedural macros
+         },
+         inlayHints = {
+            enable = true,    -- Enable inlay hints
+            typeHints = {
+               enable = true, -- Show inferred types
+            },
+            parameterHints = {
+               enable = true, -- Show parameter hints in function calls
+            },
+         },
+      },
+   },
+   on_attach = function(client, bufnr)
+      -- Enable inlay hints if the Neovim version supports it
+      if client.server_capabilities.inlayHintProvider then
+         vim.lsp.inlay_hint.enable(true)
+      end
+
+      -- Keybindings for LSP actions
+      local opts = { noremap = true, silent = true, buffer = bufnr }
+      vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+      vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+      vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+      vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
+      vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
    end,
 }
