@@ -117,5 +117,4 @@ return require('packer').startup(function(use)
    use { "Mofiqul/vscode.nvim", config = function() vim.cmd("colorscheme vscode") end }
    use "xiyaowong/transparent.nvim"
    use { "rose-pine/neovim", as = "rose-pine" }
-   use { "lukas-reineke/virt-column.nvim", opts = { char = "a", virtcolumn = "10", hilight = { "NonText" } } }
 end)
