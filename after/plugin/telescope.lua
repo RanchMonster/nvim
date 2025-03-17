@@ -10,7 +10,14 @@ function setup()
       builtin.find_files()
       vim.cmd( "Ex" )
    end )
+   vim.keymap.set( "n", "<leader>tms", function()
+      vim.cmd( "Telescope tmux sessions" )
+   end )
+   vim.keymap.set( "n", "<leader>tmw", function()
+      vim.cmd( "Telescope tmux windows" )
+   end )
 
 
 end
+
 pcall( setup )
