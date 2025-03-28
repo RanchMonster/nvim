@@ -20,6 +20,7 @@ return require('packer').startup(function(use)
    --Debugers
    use 'mfussenegger/nvim-dap'
    use 'mfussenegger/nvim-dap-python'
+   use 'HiPhish/debugpy.nvim'
    --use "github/copilot.vim"
    use "tpope/vim-surround"
    use { "folke/lazydev.nvim", ft = "lua" }
