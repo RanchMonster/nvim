@@ -17,7 +17,9 @@ return require('packer').startup(function(use)
    use 'hrsh7th/vim-vsnip'
    use 'stevanmilic/nvim-lspimport'
 
-   -- Additional Plugins
+   --Debugers
+   use 'mfussenegger/nvim-dap'
+   use 'mfussenegger/nvim-dap-python'
    --use "github/copilot.vim"
    use "tpope/vim-surround"
    use { "folke/lazydev.nvim", ft = "lua" }
@@ -118,4 +120,3 @@ return require('packer').startup(function(use)
    use "xiyaowong/transparent.nvim"
    use { "rose-pine/neovim", as = "rose-pine" }
 end)
-
