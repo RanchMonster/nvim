@@ -92,6 +92,7 @@ return require('packer').startup(function(use)
          vim.cmd("colorscheme shado")
       end
    })
+   use "williamboman/mason-lspconfig"
    use {
       'williamboman/mason.nvim',
       run = ':MasonUpdate' -- Optional: run :MasonUpdate after installation/update
@@ -109,4 +110,15 @@ return require('packer').startup(function(use)
    use("theprimeagen/harpoon")
    use("mbbill/undotree")
    use("tpope/vim-fugitive")
+   use 'neovim/nvim-lspconfig'
+   use 'williamboman/mason.nvim'
+   use 'williamboman/mason-lspconfig.nvim'
+   use 'hrsh7th/cmp-nvim-lsp'
+   use 'hrsh7th/cmp-buffer'
+   use 'hrsh7th/cmp-path'
+   use 'hrsh7th/cmp-cmdline'
+   use 'hrsh7th/nvim-cmp'
+   use 'hrsh7th/vim-vsnip'
+   use 'stevanmilic/nvim-lspimport'
 end)
+
