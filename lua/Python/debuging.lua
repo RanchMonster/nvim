@@ -1,13 +1,31 @@
 local python_debugger = require("dap-python")
-local cwd = vim.fn.getcwd()
-local debugger_set = false
-function first_time_setup()
-   local input = vim.fn.input("would you like to create a venv [y/n]:")
-   if input == "y" then
-      vim.fn.system("python3 -m venv .venv")
-      vim.fn.system(".venv/bin/python -m pip install debugpy")
+local uv = vim.loop
 
-      python_debugger.setup(".venv/bin/python")
+-- Helper function to get Poetry venv path
+local function get_poetry_venv()
+   local handle = io.popen("poetry env info -p 2>/dev/null")
+   if handle then
+      local result = handle:read("*a")
+      handle:close()
+      return result and vim.fn.trim(result)
+   end
+   return nil
+end
+
+-- First-time setup: use Poetry to create venv and install debugpy
+local function first_time_setup()
+   local input = vim.fn.input("No venv found. Create one using Poetry? [y/n]: ")
+   if input == "y" then
+      print("Creating Poetry venv and installing debugpy...")
+      vim.fn.system("poetry install")
+      vim.fn.system("poetry run python -m pip install debugpy")
+
+      local poetry_venv = get_poetry_venv()
+      if poetry_venv and uv.fs_stat(poetry_venv .. "/bin/python") then
+         python_debugger.setup(poetry_venv .. "/bin/python")
+      else
+         print("Failed to detect Poetry venv after creation.")
+      end
    elseif input == "n" then
       os.execute("touch .novenv")
       python_debugger.setup("python3")
@@ -16,18 +34,29 @@ function first_time_setup()
    end
 end
 
-for _, item in ipairs(vim.fn.readdir(cwd)) do
-   if item == ".venv" then
-      python_debugger.setup(".venv/bin/python")
-      debugger_set = true
-      break
-   elseif item == ".novenv" then
-      python_debugger.setup("python3")
-      debugger_set = true
-      break
+-- Main logic to set up debugger
+local function setup_debugger()
+   local cwd = vim.fn.getcwd()
+   local items = vim.fn.readdir(cwd)
+
+   for _, item in ipairs(items) do
+      if item == ".venv" then
+         python_debugger.setup(".venv/bin/python")
+         return
+      elseif item == ".novenv" then
+         python_debugger.setup("python3")
+         return
+      end
+   end
+
+   -- Check for existing Poetry venv
+   local poetry_venv = get_poetry_venv()
+   if poetry_venv and uv.fs_stat(poetry_venv .. "/bin/python") then
+      python_debugger.setup(poetry_venv .. "/bin/python")
+   else
+      first_time_setup()
    end
 end
-if not debugger_set then
-   first_time_setup()
-end
+
+setup_debugger()
 
