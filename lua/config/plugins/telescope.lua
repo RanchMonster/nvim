@@ -25,8 +25,8 @@ return {
       Key( "ni", "<C-l>", builtin.spell_suggest, "( Telescope ) Spell Suggest" )
 
       -- Lsp
-      Key( "n", "<leader>gd", telescope.lsp_definition, "( Telescope ) Go to Definition" )
-      Key( "n", "<leader>fr", telescope.lsp_refrences, "( Telescope ) Find Refrences" )
+      -- Key( "n", "<leader>gd", telescope.lsp_definitions, "( Telescope ) Go to Definition" )
+      -- Key( "n", "<leader>fr", telescope.lsp_references, "( Telescope ) Find Refrences" )
 
       require("config.Telescope.live_grep").setup()
    end,
