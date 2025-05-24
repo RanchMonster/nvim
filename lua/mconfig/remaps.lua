@@ -1,6 +1,5 @@
 -- vim.g.maplocalleader = "\\"
 
-
 -- EzKey
 function Key(mode, key, map, desc)
    desc = desc or ""
@@ -12,13 +11,16 @@ function Key(mode, key, map, desc)
 end
 
 -- File Navigation
-Key("n", "<Leader>ft", function() vim.cmd("Ex") end, "Opens the file tree.")
+-- Key("n", "<Leader>ft", function() vim.cmd("Ex") end, "Opens the file tree.") -- Replaced with oil.nvim
+Key("n", "<Leader>ft", function() vim.cmd("Oil") end, "Opens the file tree.")
 
 -- Better Indentation
 Key("i", "<Tab>", function() vim.cmd("norm >>") end, "Indent")
 Key("i", "<S-Tab>", function() vim.cmd("norm <<") end, "Unindent")
-Key("vn", "<Tab>", ">", "Indent")
-Key("vn", "<S-Tab>", "<", "Unindent")
+Key("n", "<Tab>", ">>", "Indent")
+Key("n", "<S-Tab>", "<<", "Unindent")
+Key("v", "<Tab>", ">", "Indent")
+Key("v", "<S-Tab>", "<", "Unindent")
 
 -- Generil Util
 Key("vi", "<C-c>", "<Esc>", "Allows for <C-c> to exit multiline.")
@@ -41,12 +43,13 @@ Key("n", "<C-d>", "<C-d>zz", "Center screen after half page jump. ")
 Key("n", "<C-u>", "<C-u>zz", "Center screen after half page jump. ")
 Key("n", "n", "nzzzv", "Center after find next")
 Key("n", "N", "Nzzzv", "Center after find next")
-Key("n", "<C-k>", "<cmd>cnext<CR>zz", "Random Jump idrk")
-Key("n", "<C-j>", "<cmd>cprev<CR>zz", "Random Jump idrk")
+-- Look at cdo
+Key("n", "<C-k>", "<cmd>cnext<CR>zz", "Quick Fix Jump")
+Key("n", "<C-j>", "<cmd>cprev<CR>zz", "Quick Fix Jump")
 Key("n", "<leader>k", "<cmd>lnext<CR>zz", "Random Jump idrk")
 Key("n", "<leader>j", "<cmd>lprev<CR>zz", "Random Jump idrk")
 
 -- Better Bin Management
-Key("nv", "<leader>d", "\"_d", "A delete that does not store the result.")   -- TODO: Learn to press backslash
+Key("nv", "<leader>d", "\"_d", "A delete that does not store the result.") -- TODO: Learn to press backslash
 Key("n", "<leader>P", "viwp", "Pastes inside the current word.")
 Key("x", "<leader>p", [["_dp]], "Paste from trash buffer.")
