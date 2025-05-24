@@ -1,9 +1,13 @@
 -- vim.g.maplocalleader = "\\"
 
 -- EzKey
+---@param mode string string of the modes used in the keybind, NOT a table
+---@param key string The keys to be pressed to trigger the bind
+---@param map string|function What the map does, Do NOT pass in a function call
+---@param desc string The description of the bind, NOT required
 function Key(mode, key, map, desc)
    desc = desc or ""
-   modes = {}
+   local modes = {}
    for i = 1, #mode do
       modes[i] = mode:sub(i, i)
    end
@@ -12,7 +16,15 @@ end
 
 -- File Navigation
 -- Key("n", "<Leader>ft", function() vim.cmd("Ex") end, "Opens the file tree.") -- Replaced with oil.nvim
-Key("n", "<Leader>ft", function() vim.cmd("Oil") end, "Opens the file tree.")
+Key(
+   "n",
+   "<Leader>ft",
+   function()
+      vim.cmd("Oil")
+      require("config.Oil.oilnvim-logo").open()
+   end,
+   "Opens the file tree."
+) -- Replaced with oil.nvim
 
 -- Better Indentation
 Key("i", "<Tab>", function() vim.cmd("norm >>") end, "Indent")
@@ -24,10 +36,16 @@ Key("v", "<S-Tab>", "<", "Unindent")
 
 -- Generil Util
 Key("vi", "<C-c>", "<Esc>", "Allows for <C-c> to exit multiline.")
-Key("n", "<leader><leader>", function()
-   vim.cmd("so")
-   vim.cmd("Lazy")
-end, "Refreshes the config and the current file.")
+Key(
+   "n",
+   "<leader><leader>",
+   function()
+      vim.cmd("so")
+      vim.cmd("Lazy")
+   end,
+   "Refreshes the config and the current file."
+)
+
 Key("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], "Replace")
 
 -- Formatting
@@ -38,7 +56,7 @@ Key("n", "E", "2be", "Moves to the end of the last word.")
 Key("v", "J", ":m '>+1<CR>gv=gv", "Move block in visual mode")
 Key("v", "K", ":m '<-2<CR>gv=gv", "Move block in visual mode")
 Key("n", "J", "mzJ`z", "Cursor stays in place when merging lines")
-Key("n", "K", "mzJ`z", "Cursor stays in place when merging lines")
+Key("n", "K", "mzK`z", "Cursor stays in place when merging lines")
 Key("n", "<C-d>", "<C-d>zz", "Center screen after half page jump. ")
 Key("n", "<C-u>", "<C-u>zz", "Center screen after half page jump. ")
 Key("n", "n", "nzzzv", "Center after find next")
@@ -53,3 +71,6 @@ Key("n", "<leader>j", "<cmd>lprev<CR>zz", "Random Jump idrk")
 Key("nv", "<leader>d", "\"_d", "A delete that does not store the result.") -- TODO: Learn to press backslash
 Key("n", "<leader>P", "viwp", "Pastes inside the current word.")
 Key("x", "<leader>p", [["_dp]], "Paste from trash buffer.")
+
+-- I can't type backslash
+Key("i", "<F8>", "\\", "Types the backslash charecter")
