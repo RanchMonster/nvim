@@ -1,18 +1,5 @@
 -- vim.g.maplocalleader = "\\"
 
--- EzKey
----@param mode string string of the modes used in the keybind, NOT a table
----@param key string The keys to be pressed to trigger the bind
----@param map string|function What the map does, Do NOT pass in a function call
----@param desc string The description of the bind, NOT required
-function Key(mode, key, map, desc)
-   desc = desc or ""
-   local modes = {}
-   for i = 1, #mode do
-      modes[i] = mode:sub(i, i)
-   end
-   vim.keymap.set(modes, key, map, { desc = desc })
-end
 
 -- File Navigation
 -- Key("n", "<Leader>ft", function() vim.cmd("Ex") end, "Opens the file tree.") -- Replaced with oil.nvim
@@ -20,7 +7,6 @@ Key(
    "n",
    "<Leader>ft",
    function()
-      vim.cmd("Oil")
       require("config.Oil.oilnvim-logo").open()
    end,
    "Opens the file tree."

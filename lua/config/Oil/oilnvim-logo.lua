@@ -1,22 +1,32 @@
 local M = {}
+local api = vim.api
+
+local augroup = api.nvim_create_augroup("FileTreeIcon", { clear = true })
+
+local LogoBuffer = nil
+local UiOpen = false
+local oil_bufnr = nil
 
 local function close()
-   if LogoBuffer ~= nil and uiOpen then
-      vim.api.nvim_buf_delete(LogoBuffer, {})
-      local autocmds = vim.api.nvim_get_autocmds({
-         group = "FileTreeIcon",
-      })
-      vim.api.nvim_del_autocmd(autocmds[1].id)
+   if LogoBuffer and UiOpen then
+      if api.nvim_buf_is_valid(LogoBuffer) then
+         api.nvim_buf_delete(LogoBuffer, {})
+      end
       LogoBuffer = nil
+      UiOpen = false
    end
 end
 
 local function filetree_icon_open()
-   -- Creates the split
-   local oil_buffer = vim.api.nvim_get_current_buf()
+   if UiOpen then
+      close()
+   end
+   UiOpen = true
 
-   vim.cmd("topleft new")
-   vim.cmd("resize 19") -- height matches logo height
+   local oil_window = api.nvim_get_current_win()
+
+   api.nvim_command("topleft new")
+   api.nvim_command("resize 19")
 
    local logo = {
       "                   -`                    ",
@@ -40,20 +50,16 @@ local function filetree_icon_open()
       " .`                                 `/   ",
    }
 
-   vim.api.nvim_buf_set_lines(0, 0, -1, false, logo)
-   local bufnr = vim.api.nvim_get_current_buf()
-   -- Set as global for simplicity
+   local bufnr = api.nvim_get_current_buf()
    LogoBuffer = bufnr
 
-   vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, logo)
+   api.nvim_buf_set_lines(bufnr, 0, -1, false, logo)
 
+   api.nvim_set_hl(0, "Magenta", { fg = "#d787ff", bold = true })
+   api.nvim_set_hl(0, "Lavender", { fg = "#af87d7", bold = false })
+   api.nvim_set_hl(0, "PurpleDark", { fg = "#875faf", bold = false })
+   api.nvim_set_hl(0, "PinkBright", { fg = "#ff87d7", bold = true })
 
-   -- Optional cleanup and polisvim.api.nvim_set_hl(0, "PinkBright", { fg = "#ff87d7", bold = true }) -- *.c
-   vim.api.nvim_set_hl(0, "Magenta", { fg = "#d787ff", bold = true })     -- *.h
-   vim.api.nvim_set_hl(0, "Lavender", { fg = "#af87d7", bold = false })   -- *.o
-   vim.api.nvim_set_hl(0, "PurpleDark", { fg = "#875faf", bold = false }) -- dark base
-
-   -- You can change this list to fine-tune line-by-line colors
    local hl_groups = {
       "PinkBright", "PinkBright", "Magenta", "Magenta", "Magenta",
       "Lavender", "Lavender", "Lavender", "Lavender", "Lavender",
@@ -62,9 +68,9 @@ local function filetree_icon_open()
    }
 
    for i = 0, #logo - 1 do
-      ---@diagnostic disable-next-line: deprecated
-      vim.api.nvim_buf_add_highlight(bufnr, -1, hl_groups[i + 1] or "Normal", i, 0, -1)
+      api.nvim_buf_add_highlight(bufnr, -1, hl_groups[i + 1] or "Normal", i, 0, -1)
    end
+
    vim.bo.buftype = "nofile"
    vim.bo.bufhidden = "wipe"
    vim.bo.swapfile = false
@@ -72,19 +78,39 @@ local function filetree_icon_open()
    vim.wo.number = false
    vim.wo.relativenumber = false
 
-   vim.api.nvim_feedkeys("<C-w>j", "n", true)
-   vim.api.nvim_create_augroup("FileTreeIcon", { clear = true })
-   vim.api.nvim_create_autocmd("BufLeave", {
-      group = "FileTreeIcon",
-      pattern = "oil://*",
-      callback = close,
-   })
-   vim.api.nvim_win_set_buf(0, oil_buffer)
+   api.nvim_set_current_win(oil_window)
 end
 
+-- Track entering Oil buffers
+api.nvim_create_autocmd("BufEnter", {
+   group = augroup,
+   callback = function(args)
+      local name = api.nvim_buf_get_name(args.buf)
+      if name:match("^oil://") then
+         oil_bufnr = args.buf
+         if not UiOpen then
+            filetree_icon_open()
+         end
+      end
+   end,
+})
+
+-- Close the logo buffer if we enter a non-oil buffer and we had opened the icon
+api.nvim_create_autocmd("BufEnter", {
+   group = augroup,
+   callback = function(args)
+      local name = api.nvim_buf_get_name(args.buf)
+      if not name:match("^oil://") and oil_bufnr and UiOpen then
+         close()
+         oil_bufnr = nil
+      end
+   end,
+})
+
 M.open = function()
+   -- Open Oil, then open the logo bar
+   vim.cmd("Oil") -- Open Oil normally
    filetree_icon_open()
 end
 
-filetree_icon_open()
 return M
