@@ -3,7 +3,3 @@
 ║  - /home/Jacob/.local/share/nvim/site/pack/packer/start/vim-fugitive          ║
 ║  - /home/Jacob/.local/share/nvim/site/pack/packer/start/lualine.nvim          ║
 ║  - /home/Jacob/.local/share/nvim/site/pack/packer/start/vim-be-good           ║
-║  - /home/Jacob/.local/share/nvim/site/pack/packer/start/vim-vsnip             ║
-║  - /home/Jacob/.local/share/nvim/site/pack/packer/start/vscode.nvim           ║
-║  - /home/Jacob/.local/share/nvim/site/pack/packer/start/cmp-buffer            ║
-║  - /home/Jacob/.local/share/nvim/site/pack/packer/start/cmp-cmdline           ║

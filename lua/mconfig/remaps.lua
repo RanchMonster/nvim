@@ -7,7 +7,8 @@ Key(
    "n",
    "<Leader>ft",
    function()
-      require("config.Oil.oilnvim-logo").open()
+      vim.cmd("Oil")
+      --      require("config.Oil.oilnvim-logo").open()
    end,
    "Opens the file tree."
 ) -- Replaced with oil.nvim
