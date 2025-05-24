@@ -1,5 +1,2 @@
 ║  - /home/Jacob/.local/share/nvim/site/pack/packer/start/vim-surround          ║
-║  - /home/Jacob/.local/share/nvim/site/pack/packer/start/refactoring.nvim      ║
 ║  - /home/Jacob/.local/share/nvim/site/pack/packer/start/vim-fugitive          ║
-║  - /home/Jacob/.local/share/nvim/site/pack/packer/start/lualine.nvim          ║
-║  - /home/Jacob/.local/share/nvim/site/pack/packer/start/vim-be-good           ║
