@@ -1,13 +1,8 @@
 -- Line Numbers
 vim.opt.nu = true
 vim.opt.relativenumber = true
-<<<<<<< HEAD:lua/Global/set.lua
-vim.opt.colorcolumn = ""
-
-=======
 
 -- Lang
->>>>>>> master:lua/mconfig/opt.lua
 vim.opt.spelllang = "en_us"
 
 -- Formatting
@@ -20,10 +15,7 @@ vim.opt.smartindent = true
 -- Wrapping
 vim.opt.wrap = false
 
-<<<<<<< HEAD:lua/Global/set.lua
-=======
 -- Backups/Saves
->>>>>>> master:lua/mconfig/opt.lua
 vim.opt.swapfile = true
 vim.opt.backup = false
 vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
