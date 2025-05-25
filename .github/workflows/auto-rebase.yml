@@ -21,10 +21,11 @@ jobs:
 
       - name: Fetch all branches
         run: git fetch origin
-
+        
       - name: Rebase branch onto main
         run: |
-          git rebase betterConfig
+          git rebase origin/betterConfig --force
+          
 
       - name: Force push rebased branch
         env:
