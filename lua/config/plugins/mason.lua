@@ -1,4 +1,4 @@
 return {
-   "mason-org/mason.org",
+   "mason-org/mason.nvim",
    opts = {}
 }
