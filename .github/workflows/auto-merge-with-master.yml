@@ -1,0 +1,50 @@
+name: Test and Create PR from jconf to master
+
+on:
+  push:
+    branches:
+      - jconf
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    container:
+      image: archlinux:latest
+
+    steps:
+      - name: Install dependencies
+        run: |
+          pacman -Sy --noconfirm
+          pacman -S --noconfirm git base-devel neovim unzip curl lua
+
+      - name: Set up Git safe directory
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Checkout jconf branch
+        uses: actions/checkout@v3
+        with:
+          ref: jconf
+
+      - name: Check Lua syntax
+        run: |
+          find . -name '*.lua' -print0 | xargs -0 -n1 luac -p
+
+      - name: Run Neovim headless to catch runtime errors
+        run: nvim --headless "+quit"
+
+      - name: Create PR using GitHub CLI
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const pr = await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: "Auto PR: Merge jconf into master",
+              head: "jconf",
+              base: "master",
+              body: "Automatically created by GitHub Actions.",
+            });
+            console.log(`Created PR #${pr.data.number}`);
+
