@@ -40,11 +40,14 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Merge jconf into master
+      - name: Rebase jconf onto master and push
         run: |
           git fetch origin master
+          git checkout jconf
+          git rebase origin/master
           git checkout master
-          git merge origin/jconf --no-ff --no-edit
+          git merge jconf --ff-only
           git push origin master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
