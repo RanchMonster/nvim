@@ -10,9 +10,9 @@ permissions:
 jobs:
   auto-approve:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.head.ref == 'jconf'  # only run if source branch is jconf
+    if: github.event.pull_request.head.ref == 'jconf'
     steps:
       - name: Auto approve PR
         uses: hmarr/auto-approve-action@v2.1.0
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.BOT_TOKEN }}
