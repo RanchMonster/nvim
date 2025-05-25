@@ -1,0 +1,50 @@
+name: Neovim Config Auto-Merge
+
+on:
+  push:
+    branches:
+      - jconf
+
+jobs:
+  test-and-merge:
+    runs-on: ubuntu-latest
+
+    container:
+      image: archlinux:latest
+
+    steps:
+      - name: Install dependencies
+        run: |
+          pacman -Sy --noconfirm
+          pacman -S --noconfirm git base-devel neovim unzip curl lua
+
+      - name: Set up Git safe directory
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          ref: jconf
+
+      - name: Check Lua syntax
+        run: |
+          find . -name '*.lua' -print0 | xargs -0 -n1 luac -p
+
+      - name: Run Neovim headless to catch runtime errors
+        run: |
+          nvim --headless "+quit"
+
+      - name: Configure git identity
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge jconf into master
+        run: |
+          git fetch origin master
+          git checkout master
+          git merge origin/jconf --no-ff --no-edit
+          git push origin master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
