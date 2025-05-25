@@ -1,4 +1,4 @@
-name: Auto PR from jconf
+name: Auto PR
 
 on:
   push:
@@ -6,40 +6,35 @@ on:
       - jconf
 
 jobs:
-  auto-pr:
-    runs-on: ubuntu-latest
-
+  create-pr:
+    runs-on: archlinux-latest
     container:
       image: archlinux:latest
 
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
       - name: Install dependencies
         run: |
-          pacman -Sy --noconfirm git base-devel
-          pacman -S --noconfirm neovim gh
+          pacman -Sy --noconfirm git base-devel curl tar
 
-      - name: Checkout repository
-        uses: actions/checkout@v3
+          # Install GitHub CLI manually
+          GH_VERSION=$(curl -s https://api.github.com/repos/cli/cli/releases/latest | grep '"tag_name":' | cut -d '"' -f 4)
+          curl -L -o gh.tar.gz "https://github.com/cli/cli/releases/download/${GH_VERSION}/gh_${GH_VERSION#v}_linux_amd64.tar.gz"
+          tar -xzf gh.tar.gz
+          cp gh_*/bin/gh /usr/local/bin/
+          chmod +x /usr/local/bin/gh
+          
+          # Confirm gh installed
+          gh --version
 
-      - name: Authenticate with GitHub CLI
+      - name: Authenticate GitHub CLI
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "$GH_TOKEN" | gh auth login --with-token
+        run: echo "${GH_TOKEN}" | gh auth login --with-token
 
-      - name: Check if PR exists
-        id: pr_check
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          if gh pr list --head jconf --base main --state open | grep -q jconf; then
-            echo "PR_EXISTS=true" >> "$GITHUB_ENV"
-          else
-            echo "PR_EXISTS=false" >> "$GITHUB_ENV"
-          fi
-
-      - name: Create PR
-        if: env.PR_EXISTS == 'false'
+      - name: Create pull request
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -48,18 +43,3 @@ jobs:
             --body "Automated PR from workflow" \
             --head jconf \
             --base main
-
-      - name: Get PR number
-        if: env.PR_EXISTS == 'false'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          PR_NUMBER=$(gh pr list --head jconf --base main --state open --json number --jq '.[0].number')
-          echo "PR_NUMBER=$PR_NUMBER" >> "$GITHUB_ENV"
-
-      - name: Enable auto-merge
-        if: env.PR_EXISTS == 'false'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh pr merge "$PR_NUMBER" --auto --merge
