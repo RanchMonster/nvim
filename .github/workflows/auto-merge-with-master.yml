@@ -17,7 +17,7 @@ jobs:
 
       - name: Set up Git branches
         run: |
-          git fetch origin main
+          git fetch origin master
           git fetch origin jconf
           git checkout jconf
 
@@ -29,4 +29,4 @@ jobs:
             --title "Auto update jconf" \
             --body "Automated PR from workflow" \
             --head jconf \
-            --base main
+            --base master
