@@ -17,3 +17,9 @@
     - undotree.lua
     - vim-fugitive.lua
     - vimbegood.lua
+
+## Config
+    It uses both a manual config ( mconfig/ ) and lazy config ( config ) to make it easier to seporate things. 
+
+## Additional features 
+    - Contains a custom live grep from TJ DeVries
