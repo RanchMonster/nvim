@@ -63,10 +63,10 @@ return {
                         enable = true,
                      },
                   },
-                  on_attach = function(client, bufnr)
-                     vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-                  end
                },
+               on_attach = function(client, bufnr)
+                  vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+               end
             }
          }
       },
