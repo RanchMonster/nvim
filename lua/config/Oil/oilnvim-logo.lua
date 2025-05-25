@@ -68,6 +68,7 @@ local function filetree_icon_open()
    }
 
    for i = 0, #logo - 1 do
+      ---@diagnostic disable-next-line: deprecated
       api.nvim_buf_add_highlight(bufnr, -1, hl_groups[i + 1] or "Normal", i, 0, -1)
    end
 

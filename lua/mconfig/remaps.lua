@@ -8,13 +8,13 @@ Key(
    "<Leader>ft",
    function()
       vim.cmd("Oil")
-      --      require("config.Oil.oilnvim-logo").open()
+      -- require("config.Oil.oilnvim-logo").open()
    end,
    "Opens the file tree."
 ) -- Replaced with oil.nvim
 
 -- Better Indentation
-Key("i", "<Tab>", function() vim.cmd("norm >>") end, "Indent")
+-- Key("i", "<Tab>", function() vim.cmd("norm >>") end, "Indent")
 Key("i", "<S-Tab>", function() vim.cmd("norm <<") end, "Unindent")
 Key("n", "<Tab>", ">>", "Indent")
 Key("n", "<S-Tab>", "<<", "Unindent")
