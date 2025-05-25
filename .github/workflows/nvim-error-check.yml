@@ -1,0 +1,27 @@
+name: Neovim error check
+
+on: [push, pull_request]
+
+jobs:
+  test-nvim:
+    runs-on: ubuntu-latest
+
+    container:
+      image: archlinux:latest
+
+    steps:
+      - name: Update pacman and install dependencies
+        run: |
+          pacman -Sy --noconfirm --needed git base-devel
+          pacman -S --noconfirm neovim git base-devel ripgrep unzip curl lua
+
+      - name: Checkout config repo
+        uses: actions/checkout@v3
+
+      - name: Check Lua syntax
+        run: |
+          find . -name '*.lua' -print0 | xargs -0 -n1 luac -p
+
+      - name: Run Neovim headless to detect runtime errors
+        run: |
+          nvim --headless "+quit"
