@@ -15,7 +15,6 @@ return {
       },
       sourcess = {
          default = { "lsp", "path", "snippets", "buffer" },
-         func
       },
    }
 }
