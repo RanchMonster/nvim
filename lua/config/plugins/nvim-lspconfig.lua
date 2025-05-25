@@ -115,10 +115,10 @@ return {
          Key("n", "<leader>gh", l.hover, "( Lsp ) Show Hover")
          Key("n", "<leader>gd", l.definition, "( Lsp ) Go to Definition")
          Key("n", "<leader>fr", l.references, "( Lsp ) Find Refrences")
-         Key("n", "<leader>ge", function()
+         Key("n", "<leader>qe", function()
             vim.diagnostic.setqflist()
             vim.cmd("cope")
-         end, "Puts all of the error into a quickfix list.")
+         end, "( Lsp ) Puts all of the error into a quickfix list.")
 
          vim.api.nvim_create_augroup("nvim-lspconfig", { clear = true })
          -- Auto formatting on write with lsp
