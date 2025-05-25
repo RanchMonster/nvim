@@ -34,16 +34,14 @@ jobs:
       - name: Run Neovim headless to catch runtime errors
         run: nvim --headless "+quit"
 
-      - name: Create or Update Pull Request to master
+      - name: Create or Update Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Auto-sync jconf branch into master"
+          commit-message: "Auto PR: sync jconf branch"
           title: "Auto PR: Merge jconf into master"
-          body: |
-            This PR was created automatically by GitHub Actions to merge the jconf branch into master after successful tests.
+          body: "Automatically created by GitHub Actions."
           base: master
-          head: jconf
-          branch: "auto-pr-jconf-to-master"
+          branch: "auto-pr-jconf-to-master"   # branch the action creates/updates with changes
           draft: false
           delete-branch: false
