@@ -6,50 +6,39 @@ on:
       - jconf
 
 jobs:
-  test:
-    if: github.event_name != 'pull_request'
+  auto-pr:
     runs-on: ubuntu-latest
-
-    container:
-      image: archlinux:latest
-
     steps:
-      - name: Install dependencies
+      - uses: actions/checkout@v3
+
+      - name: Check for existing PR
+        id: check_pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          pacman -Sy --noconfirm
-          pacman -S --noconfirm git base-devel neovim unzip curl lua
+          EXISTING_PR=$(gh pr list --head jconf --base main --state open --json number --jq '.[0].number' || echo "")
+          echo "existing_pr=$EXISTING_PR" >> $GITHUB_OUTPUT
 
-      - name: Set up Git safe directory
+      - name: Create PR if none exists
+        if: steps.check_pr.outputs.existing_pr == ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          PR_NUMBER=$(gh pr create --title "Auto update jconf" --body "Automated PR from workflow" --head jconf --base main --json number --jq '.number')
+          echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
 
-      - name: Checkout jconf branch
-        uses: actions/checkout@v3
-        with:
-          ref: jconf
-
-      - name: Check Lua syntax
+      - name: Set PR number for auto-merge
         run: |
-          find . -name '*.lua' -print0 | xargs -0 -n1 luac -p
+          echo "pr_number=${{ steps.check_pr.outputs.existing_pr != '' && steps.check_pr.outputs.existing_pr || steps.create_pr.outputs.pr_number }}" >> $GITHUB_OUTPUT
 
-      - name: Run Neovim headless to catch runtime errors
-        run: nvim --headless "+quit"
-
-      - name: Create PR using GitHub CLI
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const pr = await github.rest.pulls.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: "Auto PR: Merge jconf into master",
-              head: "jconf",
-              base: "master",
-              body: "Automatically created by GitHub Actions.",
-            });
-            console.log(`Created PR #${pr.data.number}`);
       - name: Enable Auto-Merge on PR
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # or use a PAT with repo permissions
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.check_pr.outputs.existing_pr != '' && steps.check_pr.outputs.existing_pr || steps.create_pr.outputs.pr_number }}
+          REPO: ${{ github.repository }}
         run: |
-          gh pr merge ${{ github.event.pull_request.number }} --auto --repo ${{ github.repository }}
+          curl -X PUT \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/$REPO/pulls/$PR_NUMBER/auto-merge \
+            -d '{"enabled":true,"merge_method":"merge"}'
