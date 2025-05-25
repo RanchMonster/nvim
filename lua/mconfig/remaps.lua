@@ -48,10 +48,10 @@ Key("n", "<C-u>", "<C-u>zz", "Center screen after half page jump. ")
 Key("n", "n", "nzzzv", "Center after find next")
 Key("n", "N", "Nzzzv", "Center after find next")
 -- Look at cdo
-Key("n", "<C-k>", "<cmd>cnext<CR>zz", "Quick Fix Jump")
-Key("n", "<C-j>", "<cmd>cprev<CR>zz", "Quick Fix Jump")
-Key("n", "<leader>k", "<cmd>lnext<CR>zz", "Random Jump idrk")
-Key("n", "<leader>j", "<cmd>lprev<CR>zz", "Random Jump idrk")
+Key("n", "<C-j>", "<cmd>cnext<CR>zz", "Quick Fix Jump")
+Key("n", "<C-k>", "<cmd>cprev<CR>zz", "Quick Fix Jump")
+Key("n", "<leader>j", "<cmd>lnext<CR>zz", "Random Jump idrk")
+Key("n", "<leader>k", "<cmd>lprev<CR>zz", "Random Jump idrk")
 
 -- Better Bin Management
 Key("nv", "<leader>d", "\"_d", "A delete that does not store the result.") -- TODO: Learn to press backslash
