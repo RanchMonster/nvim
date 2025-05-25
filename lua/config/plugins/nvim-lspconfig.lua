@@ -1,3 +1,4 @@
+local util = require("lspconfig/util")
 return {
    {
       "neovim/nvim-lspconfig",
@@ -31,7 +32,29 @@ return {
                   }
                }
             },
-            basedpyright = {},
+            pyright = {
+               on_attach = function(_, config)
+                  local python_path = nil
+                  local handle = io.popen("poetry env info -p 2>/dev/null")
+                  if handle then
+                     local result = handle:read("*a")
+                     handle:close()
+                     if result then
+                        python_path = vim.fn.trim(result) .. "/bin/python"
+                     end
+                  end
+                  if python_path then
+                     config.settings = config.settings or {}
+                     config.settings.python = config.settings.python or {}
+                     config.settings.python.pythonPath = python_path
+                     print("Using Poetry venv for Pyright:", python_path)
+                  else
+                     print("Warning: Could not find Poetry venv!")
+                  end
+               end,
+               ---@diagnostic disable-next-line: deprecated
+               root_dir = util.find_git_ancestor or util.path.dirname,
+            },
             rust_analyzer = {
                settings = {
                   ["rust_analyzer"] = {
@@ -79,6 +102,11 @@ return {
             update_in_insert = false,
             severity_sort = true,
          })
+
+         -- Init Lsps --
+         require("lspconfig").lua_ls.setup {}
+         require("lspconfig").pyright.setup {}
+         require("lspconfig").rust_analyzer.setup {}
 
          -- Lsp Key Maps
          local l = vim.lsp.buf
