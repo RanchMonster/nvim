@@ -1,26 +1,18 @@
-name: Auto-approve and merge PRs
+name: Auto Approve PRs from jconf branch
 
 on:
   pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
+    types: [opened, reopened, synchronize]
+
+permissions:
+  pull-requests: write
 
 jobs:
-  approve-and-merge:
-    if: github.event.pull_request.head.ref == 'jconf'   # <-- only run if PR source is jconf
+  auto-approve:
     runs-on: ubuntu-latest
-
+    if: github.event.pull_request.head.ref == 'jconf'  # only run if source branch is jconf
     steps:
-      - name: Auto approve pull request
+      - name: Auto approve PR
         uses: hmarr/auto-approve-action@v2.1.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Auto merge pull request
-        uses: "pascalgn/automerge-action@v0.15.4"
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          merge_method: squash  # or 'merge' or 'rebase' if you prefer
-          commit_message: title
