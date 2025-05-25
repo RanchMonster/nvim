@@ -11,6 +11,7 @@ jobs:
 
     steps:
       - name: Checkout full history
+
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -20,7 +21,7 @@ jobs:
           git fetch origin master
           git fetch origin jconf
           git checkout jconf
-
+          
       - name: Create Pull Request
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
