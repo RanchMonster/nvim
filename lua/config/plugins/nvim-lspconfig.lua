@@ -149,13 +149,8 @@ return {
             config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
             vim.lsp.enable(server, true)
             vim.diagnostic.enable(true)
+            -- lspconfig[server].setup(config)
          end
       end
    },
-   -- TODO: look into
-   {
-      'mrcjkb/rustaceanvim',
-      version = '^6',
-      lazy = false,
-   }
 }
