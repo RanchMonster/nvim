@@ -68,6 +68,7 @@ return {
                ---@diagnostic disable-next-line: unused-local
                on_attach = function(client, bufnr)
                   vim.lsp.inlay_hint(bufnr, true)
+                  vim.lsp.inlay_hint.enable(true)
                end
             }
          }
