@@ -119,5 +119,11 @@ return {
             vim.diagnostic.enable(true)
          end
       end
+   },
+   -- TODO: look into
+   {
+      'mrcjkb/rustaceanvim',
+      version = '^6',
+      lazy = false,
    }
 }
