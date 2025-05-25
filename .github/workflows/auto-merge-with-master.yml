@@ -1,4 +1,4 @@
-name: Neovim Config Auto-Merge
+name: Test and Create PR from jconf to master
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - jconf
 
 jobs:
-  test-and-merge:
+  test:
     runs-on: ubuntu-latest
 
     container:
@@ -22,7 +22,7 @@ jobs:
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
-      - name: Checkout repo
+      - name: Checkout jconf branch
         uses: actions/checkout@v3
         with:
           ref: jconf
@@ -32,22 +32,18 @@ jobs:
           find . -name '*.lua' -print0 | xargs -0 -n1 luac -p
 
       - name: Run Neovim headless to catch runtime errors
-        run: |
-          nvim --headless "+quit"
+        run: nvim --headless "+quit"
 
-      - name: Configure git identity
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-      - name: Rebase jconf onto master and push
-        run: |
-          git fetch origin master
-          git checkout jconf
-          git rebase origin/master
-          git checkout master
-          git merge jconf --ff-only
-          git push origin master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+      - name: Create or Update Pull Request to master
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Auto-sync jconf branch into master"
+          title: "Auto PR: Merge jconf into master"
+          body: |
+            This PR was created automatically by GitHub Actions to merge the jconf branch into master after successful tests.
+          base: master
+          head: jconf
+          branch: "auto-pr-jconf-to-master"
+          draft: false
+          delete-branch: false
