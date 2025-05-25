@@ -33,6 +33,7 @@ return {
             },
             basedpyright = {},
             rust_analyzer = {
+               cmd = { vim.fn.stdpath("data") .. "/mason/bin/rust-analyzer" },
                settings = {
                   ["rust_analyzer"] = {
                      check = {
@@ -66,7 +67,7 @@ return {
                },
                ---@diagnostic disable-next-line: unused-local
                on_attach = function(client, bufnr)
-                  vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+                  vim.lsp.inlay_hint(bufnr, true)
                end
             }
          }
@@ -112,18 +113,15 @@ return {
             end,
          })
 
+         local lspconfig = require("lspconfig")
+
          -- Configing lsps to use blink
          for server, config in pairs(opts.servers) do
             config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
             vim.lsp.enable(server, true)
             vim.diagnostic.enable(true)
+            -- lspconfig[server].setup(config)
          end
       end
    },
-   -- TODO: look into
-   {
-      'mrcjkb/rustaceanvim',
-      version = '^6',
-      lazy = false,
-   }
 }
