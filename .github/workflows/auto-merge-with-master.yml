@@ -7,34 +7,13 @@ on:
 
 jobs:
   create-pr:
-    runs-on: archlinux-latest
-    container:
-      image: archlinux:latest
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: |
-          pacman -Sy --noconfirm git base-devel curl tar
-
-          # Install GitHub CLI manually
-          GH_VERSION=$(curl -s https://api.github.com/repos/cli/cli/releases/latest | grep '"tag_name":' | cut -d '"' -f 4)
-          curl -L -o gh.tar.gz "https://github.com/cli/cli/releases/download/${GH_VERSION}/gh_${GH_VERSION#v}_linux_amd64.tar.gz"
-          tar -xzf gh.tar.gz
-          cp gh_*/bin/gh /usr/local/bin/
-          chmod +x /usr/local/bin/gh
-          
-          # Confirm gh installed
-          gh --version
-
-      - name: Authenticate GitHub CLI
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: echo "${GH_TOKEN}" | gh auth login --with-token
-
-      - name: Create pull request
+      - name: Create Pull Request
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
