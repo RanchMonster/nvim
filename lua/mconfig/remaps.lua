@@ -10,6 +10,20 @@ end
 
 -- File Navigation
 Key("n", "<Leader>ft", function() vim.cmd("Oil") end, "Opens the file tree.")
+-- vim.g.maplocalleader = "\\"
+
+
+-- File Navigation
+-- Key("n", "<Leader>ft", function() vim.cmd("Ex") end, "Opens the file tree.") -- Replaced with oil.nvim
+Key(
+   "n",
+   "<Leader>ft",
+   function()
+      vim.cmd("Oil")
+      --      require("config.Oil.oilnvim-logo").open()
+   end,
+   "Opens the file tree."
+) -- Replaced with oil.nvim
 
 -- Better Indentation
 Key("i", "<Tab>", function() vim.cmd("norm >>") end, "Indent")
@@ -21,10 +35,16 @@ Key("v", "<S-Tab>", "<", "Unindent")
 
 -- General Util
 Key("vi", "<C-c>", "<Esc>", "Allows for <C-c> to exit multiline.")
-Key("n", "<leader><leader>", function()
-   vim.cmd("so")
-   vim.cmd("Lazy")
-end, "Refreshes the config and the current file.")
+Key(
+   "n",
+   "<leader><leader>",
+   function()
+      vim.cmd("so")
+      vim.cmd("Lazy")
+   end,
+   "Refreshes the config and the current file."
+)
+
 Key("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], "Replace")
 
 -- Formatting
@@ -35,7 +55,7 @@ Key("n", "E", "2be", "Moves to the end of the last word.")
 Key("v", "J", ":m '>+1<CR>gv=gv", "Move block in visual mode")
 Key("v", "K", ":m '<-2<CR>gv=gv", "Move block in visual mode")
 Key("n", "J", "mzJ`z", "Cursor stays in place when merging lines")
-Key("n", "K", "mzJ`z", "Cursor stays in place when merging lines")
+Key("n", "K", "mzK`z", "Cursor stays in place when merging lines")
 Key("n", "<C-d>", "<C-d>zz", "Center screen after half page jump. ")
 Key("n", "<C-u>", "<C-u>zz", "Center screen after half page jump. ")
 Key("n", "n", "nzzzv", "Center after find next")
@@ -66,3 +86,5 @@ Key("n", "<F10>", function() require"dap".step_over() end, "DAP Step Over")
 Key("n", "<F11>", function() require"dap".step_into() end, "DAP Step Into")
 Key("n", "<F12>", function() require"dap".step_out() end, "DAP Step Out")
 Key("n", "<Leader>b", function() require"dap".toggle_breakpoint() end, "DAP Toggle Breakpoint")
+-- I can't type backslash
+Key("i", "<F8>", "\\", "Types the backslash charecter")
