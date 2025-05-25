@@ -149,17 +149,13 @@ return {
             config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
             vim.lsp.enable(server, true)
             vim.diagnostic.enable(true)
-<<<<<<< HEAD
-            -- lspconfig[server].setup(config)
-            vim.api.nvim_create_autocmd("BufEnter", {
-               group = "nvim-lspconfig",
-               callback = function()
-                  vim.lsp.inlay_hint.enable(true)
-               end,
-            })
-=======
->>>>>>> 5bf834a (Added: Keybind to put at all errors into a quickfix list.)
          end
       end
    },
+   -- TODO: look into
+   {
+      'mrcjkb/rustaceanvim',
+      version = '^6',
+      lazy = false,
+   }
 }
