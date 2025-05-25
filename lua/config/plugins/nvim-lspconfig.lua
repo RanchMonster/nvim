@@ -87,6 +87,7 @@ return {
                      },
                   },
                },
+               ---@diagnostic disable-next-line: unused-local
                on_attach = function(client, bufnr)
                   vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
                end
@@ -113,6 +114,10 @@ return {
          Key("n", "<leader>gh", l.hover, "( Lsp ) Show Hover")
          Key("n", "<leader>gd", l.definition, "( Lsp ) Go to Definition")
          Key("n", "<leader>fr", l.references, "( Lsp ) Find Refrences")
+         Key("n", "<leader>ge", function()
+            vim.diagnostic.setqflist()
+            vim.cmd("cope")
+         end, "Puts all of the error into a quickfix list.")
 
          -- Auto formatting on write with lsp
          vim.api.nvim_create_autocmd("LspAttach", {
@@ -138,8 +143,8 @@ return {
          -- Configing lsps to use blink
          for server, config in pairs(opts.servers) do
             config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
-            vim.lsp.config(server, config)
             vim.lsp.enable(server, true)
+            vim.diagnostic.enable(true)
          end
       end
    }
