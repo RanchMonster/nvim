@@ -115,10 +115,10 @@ return {
          Key("n", "<leader>gh", l.hover, "( Lsp ) Show Hover")
          Key("n", "<leader>gd", l.definition, "( Lsp ) Go to Definition")
          Key("n", "<leader>fr", l.references, "( Lsp ) Find Refrences")
-         Key("n", "<leader>qe", function()
+         Key("n", "<leader>ge", function()
             vim.diagnostic.setqflist()
             vim.cmd("cope")
-         end, "( Lsp ) Puts all of the error into a quickfix list.")
+         end, "Puts all of the error into a quickfix list.")
 
          vim.api.nvim_create_augroup("nvim-lspconfig", { clear = true })
          -- Auto formatting on write with lsp
@@ -149,6 +149,7 @@ return {
             config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
             vim.lsp.enable(server, true)
             vim.diagnostic.enable(true)
+<<<<<<< HEAD
             -- lspconfig[server].setup(config)
             vim.api.nvim_create_autocmd("BufEnter", {
                group = "nvim-lspconfig",
@@ -156,6 +157,8 @@ return {
                   vim.lsp.inlay_hint.enable(true)
                end,
             })
+=======
+>>>>>>> 5bf834a (Added: Keybind to put at all errors into a quickfix list.)
          end
       end
    },
