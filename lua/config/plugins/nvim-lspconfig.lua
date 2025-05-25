@@ -17,7 +17,20 @@ return {
       },
       opts = {
          servers = {
-            lua_ls = {},
+            lua_ls = {
+               cmd = { "lua-language-server" },
+               root_makers = { ".luarc.json", ".luarc.jsonc", ".git" },
+               settings = {
+                  Lua = {
+                     runtime = {
+                        version = "LuaJIT",
+                     },
+                     diagnostics = {
+                        globals = { "vim" },
+                     }
+                  }
+               }
+            },
             basedpyright = {},
             rust_analyzer = {
                settings = {
@@ -67,11 +80,6 @@ return {
             severity_sort = true,
          })
 
-         -- Init Lsps --
-         require("lspconfig").lua_ls.setup {}
-         require("lspconfig").basedpyright.setup {}
-         require("lspconfig").rust_analyzer.setup {}
-
          -- Lsp Key Maps
          local l = vim.lsp.buf
          Key("n", "<leader>gh", l.hover, "( Lsp ) Show Hover")
@@ -103,6 +111,7 @@ return {
          for server, config in pairs(opts.servers) do
             config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
             vim.lsp.config(server, config)
+            vim.lsp.enable(server, true)
          end
       end
    }
