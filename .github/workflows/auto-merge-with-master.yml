@@ -6,14 +6,28 @@ on:
       - jconf
 
 jobs:
-  create-pr:
-    runs-on: archlinux-latest
-    container:
-      image: archlinux:latest
+  auto-pr:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout full history
         uses: actions/checkout@v4
+        with:
+          ref: jconf
+          fetch-depth: 0
+
+      - name: Set up Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch base branch
+        run: |
+          git fetch origin master
+
+      - name: Push jconf branch
+        run: |
+          git push origin jconf || echo "Branch already exists"
 
       - name: Install dependencies
         run: |
@@ -62,5 +76,16 @@ jobs:
           gh pr create \
             --title "Auto update jconf" \
             --body "Automated PR from workflow" \
-            --head jconf \
-            --base main
+            --base master \
+            --head jconf || echo "PR already exists or failed"
+
+      - name: Enable Auto-Merge
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_URL=$(gh pr list --head jconf --state open --limit 1 | awk '{print $1}')
+          if [ -n "$PR_URL" ]; then
+            gh pr merge "$PR_URL" --auto --merge || echo "Auto-merge failed"
+          else
+            echo "No open PR found for jconf"
+          fi
