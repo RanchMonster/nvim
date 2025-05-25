@@ -50,6 +50,7 @@ local live_multigrep = function(opts)
    }):find()
 end
 
+<<<<<<< HEAD
 local find_todos = function(opts)
    opts = opts or {}
    opts.cwd = opts.cwd or vim.uv.cwd()
@@ -97,6 +98,10 @@ end
 
 M.find_todo = function()
    return find_todos()
+=======
+M.setup = function()
+   vim.keymap.set("n", "<C-g>", live_multigrep)
+>>>>>>> 9c8358d (Fix: filetype selection for multi-grep)
 end
 
 return M
