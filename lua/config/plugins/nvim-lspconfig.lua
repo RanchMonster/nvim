@@ -19,7 +19,42 @@ return {
          servers = {
             lua_ls = {},
             basedpyright = {},
-            rust_analyzer = {},
+            rust_analyzer = {
+               settings = {
+                  ["rust_analyzer"] = {
+                     check = {
+                        command = "clippy",
+                     },
+                     imports = {
+                        granularity = {
+                           group = "module",
+                        },
+                        prefix = "self",
+                     },
+                     cargo = {
+                        allFeatures = true,
+                        buildScripts = {
+                           enable = true,
+                        },
+                     },
+                     procMacro = {
+                        enable = true,
+                     },
+                     inlayHints = {
+                        enable = true,
+                        typeHints = {
+                           enable = true,
+                        },
+                     },
+                     parameterHints = {
+                        enable = true,
+                     },
+                  },
+                  on_attach = function(client, bufnr)
+                     vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+                  end
+               },
+            }
          }
       },
       config = function(_, opts)
@@ -67,43 +102,6 @@ return {
          -- Configing lsps to use blink
          for server, config in pairs(opts.servers) do
             config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
-            if server == "rust_analyzer" then
-               config.settings = {
-                  ["rust_analyzer"] = {
-                     check = {
-                        command = "clippy",
-                     },
-                     imports = {
-                        granularity = {
-                           group = "module",
-                        },
-                        prefix = "self",
-                     },
-                     cargo = {
-                        allFeatures = true,
-                        buildScripts = {
-                           enable = true,
-                        },
-                     },
-                     procMacro = {
-                        enable = true,
-                     },
-                     inlayHints = {
-                        enable = true,
-                        typeHints = {
-                           enable = true,
-                        },
-                     },
-                     parameterHints = {
-                        enable = true,
-                     },
-                  }
-               }
-               ---@diagnostic disable-next-line: unused-local
-               config.on_attach = function(client, bufnr)
-                  vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-               end
-            end
             vim.lsp.config(server, config)
          end
       end
