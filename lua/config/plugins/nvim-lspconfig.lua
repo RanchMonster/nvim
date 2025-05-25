@@ -65,12 +65,14 @@ return {
          })
 
          -- Configing lsps to use blink
-         local lspconfig = require("lspconfig")
          for server, config in pairs(opts.servers) do
             config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
             if server == "rust_analyzer" then
                config.settings = {
                   ["rust_analyzer"] = {
+                     check = {
+                        command = "clippy",
+                     },
                      imports = {
                         granularity = {
                            group = "module",
@@ -78,6 +80,7 @@ return {
                         prefix = "self",
                      },
                      cargo = {
+                        allFeatures = true,
                         buildScripts = {
                            enable = true,
                         },
@@ -85,8 +88,18 @@ return {
                      procMacro = {
                         enable = true,
                      },
+                     inlayHints = {
+                        enable = true,
+                        typeHints = {
+                           enable = true,
+                        },
+                     },
+                     parameterHints = {
+                        enable = true,
+                     },
                   }
                }
+               ---@diagnostic disable-next-line: unused-local
                config.on_attach = function(client, bufnr)
                   vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
                end
