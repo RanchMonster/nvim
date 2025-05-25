@@ -34,14 +34,17 @@ jobs:
       - name: Run Neovim headless to catch runtime errors
         run: nvim --headless "+quit"
 
-      - name: Create or Update Pull Request
-        uses: peter-evans/create-pull-request@v5
+      - name: Create PR using GitHub CLI
+        uses: actions/github-script@v6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Auto PR: sync jconf branch"
-          title: "Auto PR: Merge jconf into master"
-          body: "Automatically created by GitHub Actions."
-          base: master
-          branch: "auto-pr-jconf-to-master"   # branch the action creates/updates with changes
-          draft: false
-          delete-branch: false
+          script: |
+            const pr = await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: "Auto PR: Merge jconf into master",
+              head: "jconf",
+              base: "master",
+              body: "Automatically created by GitHub Actions.",
+            });
+            console.log(`Created PR #${pr.data.number}`);
+
