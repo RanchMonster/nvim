@@ -1,4 +1,4 @@
-name: Test and Create PR from jconf to master
+name: Auto PR from jconf
 
 on:
   push:
@@ -8,45 +8,58 @@ on:
 jobs:
   auto-pr:
     runs-on: ubuntu-latest
+
+    container:
+      image: archlinux:latest
+
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Install latest GitHub CLI
+      - name: Install dependencies
         run: |
-          curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-          sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
-          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-          sudo apt update
-          sudo apt install gh -y
+          pacman -Sy --noconfirm git base-devel
+          pacman -S --noconfirm neovim gh
 
-      - name: Check for existing PR
-        id: check_pr
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Authenticate with GitHub CLI
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          EXISTING_PR=$(gh pr list --head jconf --base main --state open --json number --jq '.[0].number' || echo "")
-          echo "existing_pr=$EXISTING_PR" >> $GITHUB_OUTPUT
-          
-      - name: Create PR if none exists
-        if: steps.check_pr.outputs.existing_pr == ''
+          echo "$GH_TOKEN" | gh auth login --with-token
+
+      - name: Check if PR exists
+        id: pr_check
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          PR_NUMBER=$(gh pr create --title "Auto update jconf" --body "Automated PR from workflow" --head jconf --base main --json number --jq '.number')
-          echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
+          if gh pr list --head jconf --base main --state open | grep -q jconf; then
+            echo "PR_EXISTS=true" >> "$GITHUB_ENV"
+          else
+            echo "PR_EXISTS=false" >> "$GITHUB_ENV"
+          fi
 
-      - name: Set PR number for auto-merge
-        run: |
-          echo "pr_number=${{ steps.check_pr.outputs.existing_pr != '' && steps.check_pr.outputs.existing_pr || steps.create_pr.outputs.pr_number }}" >> $GITHUB_OUTPUT
-
-      - name: Enable Auto-Merge on PR
+      - name: Create PR
+        if: env.PR_EXISTS == 'false'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ steps.check_pr.outputs.existing_pr != '' && steps.check_pr.outputs.existing_pr || steps.create_pr.outputs.pr_number }}
-          REPO: ${{ github.repository }}
         run: |
-          curl -X PUT \
-            -H "Authorization: Bearer $GH_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/$REPO/pulls/$PR_NUMBER/auto-merge \
-            -d '{"enabled":true,"merge_method":"merge"}'
+          gh pr create \
+            --title "Auto update jconf" \
+            --body "Automated PR from workflow" \
+            --head jconf \
+            --base main
+
+      - name: Get PR number
+        if: env.PR_EXISTS == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_NUMBER=$(gh pr list --head jconf --base main --state open --json number --jq '.[0].number')
+          echo "PR_NUMBER=$PR_NUMBER" >> "$GITHUB_ENV"
+
+      - name: Enable auto-merge
+        if: env.PR_EXISTS == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr merge "$PR_NUMBER" --auto --merge
