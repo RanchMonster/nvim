@@ -31,7 +31,26 @@ return {
                   }
                }
             },
-            basedpyright = {},
+            basedpyright = {
+               settings = {
+                  basedpyright = {
+                     analysis = {
+                        autoImportCompletions = true,
+                        autoSearchPaths = true,
+                        useLibraryCodeForTypes = true,
+                        diagnosticMode = "workspace", -- "openFilesOnly" for performance
+                        typeCheckingMode = "strict",  -- options: "off", "basic", "strict"
+                        stubPath = "typings",         -- optional: useful for custom type stubs
+
+                        inlayHints = {
+                           variableTypes = true,
+                           functionReturnTypes = true,
+                           parameterNames = true,
+                        },
+                     },
+                  },
+               },
+            },
             rust_analyzer = {
                cmd = { vim.fn.stdpath("data") .. "/mason/bin/rust-analyzer" },
                settings = {
@@ -83,12 +102,17 @@ return {
             severity_sort = true,
          })
 
+         vim.api.nvim_create_augroup("nvim-lspconfig", { clear = true })
+
          -- Lsp Key Maps
          local l = vim.lsp.buf
-         Key("n", "<leader>gh", l.hover, "( Lsp ) Show Hover")
+         Key("n", "<leader>h", l.hover, "( Lsp ) Show Hover")
          Key("n", "<leader>gd", l.definition, "( Lsp ) Go to Definition")
          Key("n", "<leader>fr", l.references, "( Lsp ) Find Refrences")
-         Key("n", "<leader>qe", function()
+         Key("n", "<leader>rn", l.rename, "( Lsp ) Rename")
+         Key("n", "<leader>gD", l.declaration, "( Lsp ) Go to Declaration")
+         Key("n", "<leader>ca", l.code_action, "( Lsp ) Go to Declaration")
+         Key("n", "<leader>q", function()
             vim.diagnostic.setqflist()
             vim.cmd("cope")
          end, "( Lsp ) Puts all of the error into a quickfix list.")
@@ -122,6 +146,12 @@ return {
             vim.lsp.enable(server, true)
             vim.diagnostic.enable(true)
             -- lspconfig[server].setup(config)
+            vim.api.nvim_create_autocmd("BufEnter", {
+               group = "nvim-lspconfig",
+               callback = function()
+                  vim.lsp.inlay_hint.enable(true)
+               end,
+            })
          end
       end
    },
