@@ -1,4 +1,4 @@
-name: Auto Create PR
+name: Neovim Config Auto-Merge
 
 on:
   push:
@@ -6,36 +6,41 @@ on:
       - jconf
 
 jobs:
-  auto-pr:
+  test-and-merge:
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: write
-      pull-requests: write
+    container:
+      image: archlinux:latest
 
     steps:
-      - name: Checkout jconf
-        uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          pacman -Sy --noconfirm
+          pacman -S --noconfirm git base-devel neovim unzip curl lua
+
+      - name: Set up Git safe directory
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Checkout repo
+        uses: actions/checkout@v3
         with:
           ref: jconf
-          fetch-depth: 0
 
-      - name: Set up Git
+      - name: Check Lua syntax
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          find . -name '*.lua' -print0 | xargs -0 -n1 luac -p
 
-      - name: Fetch base branch
+      - name: Run Neovim headless to catch runtime errors
         run: |
-          git fetch origin master
+          nvim --headless "+quit"
 
-      - name: Push jconf branch
+      - name: Configure git identity
         run: |
-          git push origin jconf || echo "Branch already exists"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Create Pull Request
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Merge jconf into master
         run: |
           gh pr create \
             --title "Auto update jconf" \
