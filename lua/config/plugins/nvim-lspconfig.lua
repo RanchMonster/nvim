@@ -150,6 +150,12 @@ return {
             vim.lsp.enable(server, true)
             vim.diagnostic.enable(true)
             -- lspconfig[server].setup(config)
+            vim.api.nvim_create_autocmd("BufEnter", {
+               group = "nvim-lspconfig",
+               callback = function()
+                  vim.lsp.inlay_hint.enable(true)
+               end,
+            })
          end
       end
    },
