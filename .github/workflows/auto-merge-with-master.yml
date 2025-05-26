@@ -41,15 +41,26 @@ jobs:
             --title "Auto update jconf" \
             --body "Automated PR from workflow" \
             --base master \
+            --head jconf || echo "PR already exists or failed"\
+            && gh pr create \
+            --title "Auto update jconf" \
+            --body "Automated PR from workflow" \
+            --base betterConfig \
             --head jconf || echo "PR already exists or failed"
 
       - name: Enable Auto-Merge
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          PR_URL=$(gh pr list --head jconf --state open --limit 1 | awk '{print $1}')
-          if [ -n "$PR_URL" ]; then
-            gh pr merge "$PR_URL" --auto --merge || echo "Auto-merge failed"
+          PR_INFO=$(gh pr list --head jconf --state open --limit 2 --json number -q '.[0].number')
+          if [ -n "$PR_INFO" ]; then
+            echo "Found PR #$PR_INFO for 'jconf' branch. Attempting auto-merge..."
+            if gh pr merge "$PR_INFO" --auto --merge; then
+              echo "Auto-merge enabled successfully."
+            else
+              echo "Auto-merge failed."
+            fi
           else
-            echo "No open PR found for jconf"
+            echo "No open PR found for 'jconf' branch."
           fi
+
