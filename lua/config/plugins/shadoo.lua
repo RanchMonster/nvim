@@ -1,8 +1,8 @@
-return { 
-	{
-		"shadorain/shadotheme",
-		config = function()
-			vim.cmd.colorscheme "shado"
-		end, 
-	}
+return {
+   {
+      "Mofiqul/vscode.nvim",
+      config = function()
+         vim.cmd.colorscheme "vscode"
+      end,
+   }
 }

@@ -1,3 +1,4 @@
+local util = require("lspconfig/util")
 return {
    {
       "neovim/nvim-lspconfig",
@@ -32,6 +33,27 @@ return {
                }
             },
             basedpyright = {
+          on_attach = function(_, config)
+                  local python_path = nil
+                  local handle = io.popen("poetry env info -p 2>/dev/null")
+                  if handle then
+                     local result = handle:read("*a")
+                     handle:close()
+                     if result then
+                        python_path = vim.fn.trim(result) .. "/bin/python"
+                     end
+                  end
+                  if python_path then
+                     config.settings = config.settings or {}
+                     config.settings.python = config.settings.python or {}
+                     config.settings.python.pythonPath = python_path
+                     print("Using Poetry venv for Pyright:", python_path)
+                  else
+                     print("Warning: Could not find Poetry venv!")
+                  end
+               end,
+               ---@diagnostic disable-next-line: deprecated
+               root_dir = util.find_git_ancestor or util.path.dirname,
                settings = {
                   basedpyright = {
                      analysis = {
@@ -50,7 +72,6 @@ return {
                      },
                   },
                },
-            },
             rust_analyzer = {
                cmd = { vim.fn.stdpath("data") .. "/mason/bin/rust-analyzer" },
                settings = {
@@ -87,7 +108,6 @@ return {
                ---@diagnostic disable-next-line: unused-local
                on_attach = function(client, bufnr)
                   vim.lsp.inlay_hint(bufnr, true)
-                  vim.lsp.inlay_hint.enable(true)
                end
             }
          }
@@ -102,7 +122,12 @@ return {
             severity_sort = true,
          })
 
+
          vim.api.nvim_create_augroup("nvim-lspconfig", { clear = true })
+         -- Init Lsps --
+         require("lspconfig").lua_ls.setup {}
+         require("lspconfig").basedpyright.setup {}
+         require("lspconfig").rust_analyzer.setup {}
 
          -- Lsp Key Maps
          local l = vim.lsp.buf
@@ -117,6 +142,7 @@ return {
             vim.cmd("cope")
          end, "( Lsp ) Puts all of the error into a quickfix list.")
 
+         vim.api.nvim_create_augroup("nvim-lspconfig", { clear = true })
          -- Auto formatting on write with lsp
          vim.api.nvim_create_autocmd("LspAttach", {
             callback = function(args)
