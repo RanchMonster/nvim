@@ -98,5 +98,8 @@ end
 M.find_todo = function()
    return find_todos()
 end
+M.setup = function()
+   vim.keymap.set("n", "<C-g>", live_multigrep)
+end
 
 return M

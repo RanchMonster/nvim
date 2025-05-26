@@ -57,6 +57,21 @@ Key("n", "<leader>k", "<cmd>lprev<CR>zz", "Random Jump idrk")
 Key("nv", "<leader>d", "\"_d", "A delete that does not store the result.") -- TODO: Learn to press backslash
 Key("n", "<leader>P", "viwp", "Pastes inside the current word.")
 Key("x", "<leader>p", [["_dp]], "Paste from trash buffer.")
+-- Home functionality
+Key("nvi", "<Home>", function()
+   local pos1 = vim.api.nvim_win_get_cursor(0)
+   vim.cmd("norm ^")
+   local pos2 = vim.api.nvim_win_get_cursor(0)
+   if pos1[2] == pos2[2] then
+      vim.cmd("norm 0")
+   end
+end, "Smart Home key")
 
+-- DAP mappings
+Key("n", "<F5>", function() require "dap".continue() end, "DAP Continue")
+Key("n", "<F10>", function() require "dap".step_over() end, "DAP Step Over")
+Key("n", "<F11>", function() require "dap".step_into() end, "DAP Step Into")
+Key("n", "<F12>", function() require "dap".step_out() end, "DAP Step Out")
+Key("n", "<Leader>b", function() require "dap".toggle_breakpoint() end, "DAP Toggle Breakpoint")
 -- I can't type backslash
 Key("i", "<F8>", "\\", "Types the backslash charecter")
