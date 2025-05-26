@@ -68,7 +68,6 @@ return {
                ---@diagnostic disable-next-line: unused-local
                on_attach = function(client, bufnr)
                   vim.lsp.inlay_hint(bufnr, true)
-                  vim.lsp.inlay_hint.enable(true)
                end
             }
          }
@@ -93,6 +92,7 @@ return {
             vim.cmd("cope")
          end, "( Lsp ) Puts all of the error into a quickfix list.")
 
+         vim.api.nvim_create_augroup("nvim-lspconfig", { clear = true })
          -- Auto formatting on write with lsp
          vim.api.nvim_create_autocmd("LspAttach", {
             callback = function(args)
@@ -122,6 +122,12 @@ return {
             vim.lsp.enable(server, true)
             vim.diagnostic.enable(true)
             -- lspconfig[server].setup(config)
+            vim.api.nvim_create_autocmd("BufEnter", {
+               group = "nvim-lspconfig",
+               callback = function()
+                  vim.lsp.inlay_hint.enable(true)
+               end,
+            })
          end
       end
    },
