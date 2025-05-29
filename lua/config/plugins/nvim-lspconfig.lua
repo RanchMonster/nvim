@@ -33,7 +33,7 @@ return {
                }
             },
             basedpyright = {
-          on_attach = function(_, config)
+               on_attach = function(_, config)
                   local python_path = nil
                   local handle = io.popen("poetry env info -p 2>/dev/null")
                   if handle then
@@ -72,6 +72,7 @@ return {
                      },
                   },
                },
+            },
             rust_analyzer = {
                cmd = { vim.fn.stdpath("data") .. "/mason/bin/rust-analyzer" },
                settings = {
