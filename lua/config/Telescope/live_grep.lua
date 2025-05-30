@@ -96,7 +96,7 @@ M.multigrep = function()
 end
 
 M.find_todo = function()
-   return find_todos()
+   return find_todos
 end
 
 return M
