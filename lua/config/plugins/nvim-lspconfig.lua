@@ -57,6 +57,7 @@ return {
                   ["rust_analyzer"] = {
                      check = {
                         command = "clippy",
+                        features = "all",
                      },
                      imports = {
                         granularity = {
@@ -74,6 +75,15 @@ return {
                         enable = true,
                      },
                      inlayHints = {
+                        variableTypes = true,
+                        functionReturnTypes = true,
+                        parameterNames = true,
+                        bindingModeHints = {
+                           enable = true,
+                        },
+                        implicitDrops = {
+                           enable = true,
+                        },
                         enable = true,
                         typeHints = {
                            enable = true,
@@ -82,6 +92,16 @@ return {
                      parameterHints = {
                         enable = true,
                      },
+                     completion = {
+                        privateEditable = {
+                           enable = true,
+                        },
+                     },
+                     diagnostics = {
+                        styleLints = {
+                           enable = true,
+                        },
+                     }
                   },
                },
                ---@diagnostic disable-next-line: unused-local
@@ -108,6 +128,7 @@ return {
          local l = vim.lsp.buf
          Key("n", "<leader>h", l.hover, "( Lsp ) Show Hover")
          Key("n", "<leader>gd", l.definition, "( Lsp ) Go to Definition")
+         Key("n", "<leader>gi", l.implementation, "( Lsp ) Go to Implementation")
          Key("n", "<leader>fr", l.references, "( Lsp ) Find Refrences")
          Key("n", "<leader>rn", l.rename, "( Lsp ) Rename")
          Key("n", "<leader>gD", l.declaration, "( Lsp ) Go to Declaration")
