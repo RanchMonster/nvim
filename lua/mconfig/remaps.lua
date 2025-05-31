@@ -66,6 +66,7 @@ Key("nvi", "<Home>", function()
       vim.cmd("norm 0")
    end
 end, "Smart Home key")
+--Git keybinds
 Key("n", "<leader>ga", function()
    vim.cmd("Git add %")
 end, "Quick Git add")
@@ -75,6 +76,13 @@ end, "Quick git remove")
 Key("n", "<leader>gc", function()
    vim.cmd("Git commit")
 end, "Quick commit")
+Key("n", "<leader><Up>", function()
+   vim.cmd("Git push")
+end, "Quick git push")
+Key("n", "<leader><Down>", function()
+   vim.cmd("Git pull")
+end, "Quick git pull")
+
 -- DAP mappings
 Key("n", "<F5>", function() require "dap".continue() end, "DAP Continue")
 Key("n", "<F10>", function() require "dap".step_over() end, "DAP Step Over")
