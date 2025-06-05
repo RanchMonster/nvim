@@ -32,7 +32,7 @@ return {
                   }
                }
             },
-            pyright = {
+            basedpyright = {
                on_attach = function(_, config)
                   local python_path = nil
                   local handle = io.popen("poetry env info -p 2>/dev/null")
@@ -55,7 +55,7 @@ return {
                ---@diagnostic disable-next-line: deprecated
                root_dir = util.find_git_ancestor or util.path.dirname,
                settings = {
-                  pyright = {
+                  basedpyright = {
                      analysis = {
                         autoImportCompletions = true,
                         autoSearchPaths = true,
@@ -127,7 +127,7 @@ return {
          vim.api.nvim_create_augroup("nvim-lspconfig", { clear = true })
          -- Init Lsps --
          require("lspconfig").lua_ls.setup {}
-         require("lspconfig").pyright.setup {}
+         require("lspconfig").basedpyright.setup {}
          require("lspconfig").rust_analyzer.setup {}
 
          -- Lsp Key Maps
