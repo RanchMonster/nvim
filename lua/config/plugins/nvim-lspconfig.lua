@@ -77,6 +77,7 @@ return {
                   ["rust_analyzer"] = {
                      check = {
                         command = "clippy",
+                        features = "all",
                      },
                      imports = {
                         granularity = {
@@ -94,6 +95,15 @@ return {
                         enable = true,
                      },
                      inlayHints = {
+                        variableTypes = true,
+                        functionReturnTypes = true,
+                        parameterNames = true,
+                        bindingModeHints = {
+                           enable = true,
+                        },
+                        implicitDrops = {
+                           enable = true,
+                        },
                         enable = true,
                         typeHints = {
                            enable = true,
@@ -102,14 +112,20 @@ return {
                      parameterHints = {
                         enable = true,
                      },
+                     completion = {
+                        privateEditable = {
+                           enable = true,
+                        },
+                     },
+                     diagnostics = {
+                        styleLints = {
+                           enable = true,
+                        },
+                     }
                   },
                },
-               ---@diagnostic disable-next-line: unused-local
-               on_attach = function(client, bufnr)
-                  vim.lsp.inlay_hint(bufnr, true)
-               end
-            }
-         }
+            },
+         },
       },
       config = function(_, opts)
          vim.diagnostic.config({
@@ -150,14 +166,21 @@ return {
                end
             end,
          })
-
+         vim.api.nvim_create_autocmd("BufEnter", {
+            group = "nvim-lspconfig",
+            callback = function()
+               vim.lsp.inlay_hint.enable(true)
+            end,
+         })
          -- Final LSP setup
          local lspconfig = require("lspconfig")
          local util = require("lspconfig/util")
          opts.servers.basedpyright.root_dir = util.find_git_ancestor or util.path.dirname
          for server, config in pairs(opts.servers) do
             config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
-            lspconfig[server].setup(config)
+            vim.lsp.enable(server, true)
+            vim.diagnostic.enable(true)
+            -- lspconfig[server].setup(config)
          end
       end
    },
