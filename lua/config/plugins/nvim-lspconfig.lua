@@ -1,4 +1,3 @@
-local util = require("lspconfig/util")
 return {
    {
       "neovim/nvim-lspconfig",
@@ -47,13 +46,12 @@ return {
                      config.settings = config.settings or {}
                      config.settings.python = config.settings.python or {}
                      config.settings.python.pythonPath = python_path
-                     print("Using Poetry venv for Pyright:", python_path)
+                     print("Using Poetry venv for basedpyright:", python_path)
                   else
                      print("Warning: Could not find Poetry venv!")
                   end
                end,
                ---@diagnostic disable-next-line: deprecated
-               root_dir = util.find_git_ancestor or util.path.dirname,
                settings = {
                   basedpyright = {
                      analysis = {
@@ -114,21 +112,15 @@ return {
          }
       },
       config = function(_, opts)
-         -- For inline error messages
          vim.diagnostic.config({
-            virtual_text = true, -- show inline text
-            signs = true,        -- show signs in gutter
-            underline = true,    -- underline errors
-            update_in_insert = false,
+            virtual_text = true,
+            signs = true,
+            underline = true,
+            update_in_inbsert = false,
             severity_sort = true,
          })
 
-
          vim.api.nvim_create_augroup("nvim-lspconfig", { clear = true })
-         -- Init Lsps --
-         require("lspconfig").lua_ls.setup {}
-         require("lspconfig").basedpyright.setup {}
-         require("lspconfig").rust_analyzer.setup {}
 
          -- Lsp Key Maps
          local l = vim.lsp.buf
@@ -137,27 +129,21 @@ return {
          Key("n", "<leader>fr", l.references, "( Lsp ) Find Refrences")
          Key("n", "<leader>rn", l.rename, "( Lsp ) Rename")
          Key("n", "<leader>gD", l.declaration, "( Lsp ) Go to Declaration")
-         Key("n", "<leader>ca", l.code_action, "( Lsp ) Go to Declaration")
+         Key("n", "<leader>ca", l.code_action, "( Lsp ) Code Action")
          Key("n", "<leader>q", function()
             vim.diagnostic.setqflist()
             vim.cmd("cope")
-         end, "( Lsp ) Puts all of the error into a quickfix list.")
+         end, "( Lsp ) Puts all errors into a quickfix list.")
 
-         vim.api.nvim_create_augroup("nvim-lspconfig", { clear = true })
-         -- Auto formatting on write with lsp
+         -- Format on save
          vim.api.nvim_create_autocmd("LspAttach", {
             callback = function(args)
-               -- Get the current lsp client
                local client = vim.lsp.get_client_by_id(args.data.client_id)
                if not client then return end
-               -- Checking if there is an lsp for the language
-               -- The next line was made using "gra"
-               ---@diagnostic disable-next-line: missing-parameter, param-type-mismatch
                if client.supports_method("textDocument/formatting") then
-                  vim.api.nvim_create_autocmd("BufWritePre", { -- Autocmd: When atempting to write stack( this, write )
-                     buffer = args.buf,                        -- args.buf: source of current buffer
+                  vim.api.nvim_create_autocmd("BufWritePre", {
+                     buffer = args.buf,
                      callback = function()
-                        -- Formats the current buffer, using the current lsp
                         vim.lsp.buf.format({ bufnr = args.buf, id = client.id })
                      end
                   })
@@ -165,20 +151,13 @@ return {
             end,
          })
 
+         -- Final LSP setup
          local lspconfig = require("lspconfig")
-
-         -- Configing lsps to use blink
+         local util = require("lspconfig/util")
+         opts.servers.basedpyright.root_dir = util.find_git_ancestor or util.path.dirname
          for server, config in pairs(opts.servers) do
             config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
-            vim.lsp.enable(server, true)
-            vim.diagnostic.enable(true)
-            -- lspconfig[server].setup(config)
-            vim.api.nvim_create_autocmd("BufEnter", {
-               group = "nvim-lspconfig",
-               callback = function()
-                  vim.lsp.inlay_hint.enable(true)
-               end,
-            })
+            lspconfig[server].setup(config)
          end
       end
    },
