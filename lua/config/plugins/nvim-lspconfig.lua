@@ -71,6 +71,34 @@ return {
                   },
                },
             },
+            intelephense = {
+               cmd = { vim.fn.stdpath("data") .. "/mason/bin/intelephense", "--stdio" },
+               filetypes = { "php" },
+               root_dir = function(fname)
+                  local util = require("lspconfig/util")
+                  return util.root_pattern("composer.json", ".git")(fname)
+                      or util.path.dirname(fname)
+               end,
+               settings = {
+                  intelephense = {
+                     environment = {
+                        includePaths = { "vendor" }, -- or add custom stub dirs
+                     },
+                     diagnostics = {
+                        enable = true,
+                     },
+                     completion = {
+                        fullyQualifyGlobalConstantsAndFunctions = true,
+                     },
+                     files = {
+                        maxSize = 5000000, -- in bytes
+                     },
+                     telemetry = {
+                        enabled = false,
+                     },
+                  },
+               },
+            },
             rust_analyzer = {
                cmd = { vim.fn.stdpath("data") .. "/mason/bin/rust-analyzer" },
                settings = {
