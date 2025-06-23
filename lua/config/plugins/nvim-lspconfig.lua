@@ -153,8 +153,35 @@ return {
                   },
                },
             },
+            clangd = {
+               cmd = { vim.fn.stdpath("data") .. "/mason/bin/clangd" }, -- or just "clangd" if in PATH
+               filetypes = { "c", "cpp", "hpp", "h", "objc", "objcpp", "cuda", "proto" },
+               root_dir = function(fname)
+                  local util = require("lspconfig/util")
+                  return util.root_pattern("compile_commands.json", "compile_flags.txt", ".git")(fname)
+               end,
+               capabilities = {},       -- Will be filled later in config loop
+               init_options = {
+                  clangdFileStatus = true, -- provides file status updates
+                  usePlaceholders = true,
+                  completeUnimported = true,
+                  semanticHighlighting = true,
+               },
+               settings = {
+                  clangd = {
+                     fallbackFlags = {
+                        "-std=c++20",
+                        "-Wall",
+                        "-Wextra",
+                        "-Wpedantic",
+                     },
+                  },
+               },
+            }
          },
       },
+
+
       config = function(_, opts)
          vim.diagnostic.config({
             virtual_text = true,
@@ -165,7 +192,6 @@ return {
          })
 
          vim.api.nvim_create_augroup("nvim-lspconfig", { clear = true })
-
          -- Lsp Key Maps
          local l = vim.lsp.buf
          Key("n", "<leader>h", l.hover, "( Lsp ) Show Hover")
