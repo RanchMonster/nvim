@@ -160,7 +160,7 @@ return {
                   local util = require("lspconfig/util")
                   return util.root_pattern("compile_commands.json", "compile_flags.txt", ".git")(fname)
                end,
-               capabilities = {},       -- Will be filled later in config loop
+               capabilities = {},          -- Will be filled later in config loop
                init_options = {
                   clangdFileStatus = true, -- provides file status updates
                   usePlaceholders = true,
