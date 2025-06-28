@@ -17,6 +17,51 @@ return {
       },
       opts = {
          servers = {
+            tsserver = {
+               cmd = { "typescript-language-server", "--stdio" },
+               root_dir = require("lspconfig.util").root_pattern("tsconfig.json", "package.json", ".git"),
+               settings = {
+                  typescript = {
+                     inlayHints = {
+                        includeInlayParameterNameHints = "all",
+                        includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                        includeInlayFunctionParameterTypeHints = true,
+                        includeInlayVariableTypeHints = true,
+                        includeInlayPropertyDeclarationTypeHints = true,
+                        includeInlayFunctionLikeReturnTypeHints = true,
+                        includeInlayEnumMemberValueHints = true,
+                     },
+                     preferences = {
+                        importModuleSpecifierPreference = "relative",
+                        includeCompletionsForModuleExports = true,
+                        includeCompletionsWithInsertText = true,
+                     },
+                     suggest = {
+                        includeCompletionsForImportStatements = true,
+                     },
+                  },
+                  javascript = {
+                     inlayHints = {
+                        includeInlayParameterNameHints = "all",
+                        includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                        includeInlayFunctionParameterTypeHints = true,
+                        includeInlayVariableTypeHints = true,
+                        includeInlayPropertyDeclarationTypeHints = true,
+                        includeInlayFunctionLikeReturnTypeHints = true,
+                        includeInlayEnumMemberValueHints = true,
+                     },
+                     preferences = {
+                        importModuleSpecifierPreference = "relative",
+                     },
+                     suggest = {
+                        includeCompletionsForImportStatements = true,
+                     },
+                  },
+               },
+               init_options = {
+                  hostInfo = "neovim",
+               },
+            },
             lua_ls = {
                cmd = { "lua-language-server" },
                root_makers = { ".luarc.json", ".luarc.jsonc", ".git" },
