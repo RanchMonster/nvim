@@ -69,9 +69,6 @@ return {
                      runtime = {
                         version = "LuaJIT",
                      },
-                     diagnostics = {
-                        globals = { "vim" },
-                     }
                   }
                }
             },
@@ -197,6 +194,7 @@ return {
                   },
                },
             },
+            cssls = {},
             clangd = {
                cmd = { vim.fn.stdpath("data") .. "/mason/bin/clangd" }, -- or just "clangd" if in PATH
                filetypes = { "c", "cpp", "hpp", "h", "objc", "objcpp", "cuda", "proto" },
