@@ -9,7 +9,7 @@ return {
                clear_suggestion = "<C-l>",
                accept_word = "<C-j>",
             },
-            ignore_filetypes = { rust = true }, -- or { "rust", }
+            ignore_filetypes = {}, -- or { "rust", }
             color = {
                suggestion_color = "#ffffff",
                cterm = 244,

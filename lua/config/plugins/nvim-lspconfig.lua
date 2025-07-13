@@ -61,17 +61,8 @@ return {
                   hostInfo = "neovim",
                },
             },
-            lua_ls = {
-               cmd = { "lua-language-server" },
-               root_makers = { ".luarc.json", ".luarc.jsonc", ".git" },
-               settings = {
-                  Lua = {
-                     runtime = {
-                        version = "LuaJIT",
-                     },
-                  }
-               }
-            },
+            lua_ls = {},
+            html = {},
             basedpyright = {
                on_attach = function(_, config)
                   local python_path = nil
