@@ -63,6 +63,7 @@ return {
             },
             lua_ls = {},
             html = {},
+            bashls = {},
             basedpyright = {
                on_attach = function(_, config)
                   local python_path = nil
@@ -130,6 +131,10 @@ return {
                      },
                   },
                },
+            },
+            slint_lsp = {
+               cmd = { vim.fn.stdpath("data") .. "/mason/bin/slint-lsp" },
+
             },
             rust_analyzer = {
                cmd = { vim.fn.stdpath("data") .. "/mason/bin/rust-analyzer" },
