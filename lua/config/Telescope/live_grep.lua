@@ -6,8 +6,16 @@ local pickers = require "telescope.pickers"
 local finders = require "telescope.finders"
 local make_entry = require "telescope.make_entry"
 local conf = require "telescope.config".values
-
 local M = {}
+
+--- ENSURE THAT RIPGREP IS INSTALLED
+if os.execute("which rg") ~= 0 then
+   print("ripgrep is not installed please install ripgrep to use this feature")
+   M.multigrep = function()
+      print("ripgrep is not installed")
+   end
+   return M
+end
 
 local live_multigrep = function(opts)
    opts = opts or {}
@@ -50,56 +58,6 @@ local live_multigrep = function(opts)
    }):find()
 end
 
-local find_todos = function(opts)
-   opts = opts or {}
-   opts.cwd = opts.cwd or vim.uv.cwd()
 
-   local finder = finders.new_async_job {
-      command_generator = function(prompt)
-         prompt = "TODO"
-         if not prompt or prompt == "" then
-            return nil
-         end
-
-         local pieces = vim.split(prompt, "  ")
-         local args = { "rg" }
-         if pieces[1] then
-            table.insert(args, "-e")
-            table.insert(args, pieces[1])
-         end
-
-         if pieces[2] then
-            table.insert(args, "-g")
-            table.insert(args, pieces[2])
-         end
-
-         ---@diagnostic disable-next-line: deprecated
-         return vim.tbl_flatten {
-            args,
-            { "--color=never", "--no-heading", "--with-filename", "--line-number", "--column", "--smart-case" },
-         }
-      end,
-      entry_maker = make_entry.gen_from_vimgrep(opts),
-      cwd = ".",
-   }
-
-   pickers.new(opts, {
-      debounce = 100,
-      prompt_title = "Multi Grep",
-      finder = finder,
-      previewer = conf.grep_previewer(opts),
-      sorter = require("telescope.sorters").empty(),
-   }):find()
-end
-M.multigrep = function()
-   return live_multigrep
-end
-
-M.find_todo = function()
-   return find_todos()
-end
-M.setup = function()
-   vim.keymap.set("n", "<C-g>", live_multigrep)
-end
-
+M.multigrep = live_multigrep
 return M
