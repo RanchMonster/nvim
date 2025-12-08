@@ -61,3 +61,23 @@ end, {
    nargs = "*",
    desc = "Bootstrap a basic C or C++ CMake project. Usage: :CMakeInit [project_name] [c|cpp]",
 })
+vim.api.nvim_create_user_command("CBuild", function(opts)
+   local build_cmd = "cmake --build . --config Debug"
+   vim.fn.jobstart(build_cmd, {
+      on_stdout = function(_, data)
+         print(data)
+      end,
+      on_stderr = function(_, data)
+         print(data)
+      end,
+      on_exit = function(_, code)
+         if code == 0 then
+            vim.notify("✅ Built successfully.", vim.log.levels.INFO)
+         else
+            vim.notify("❌ Build failed.", vim.log.levels.ERROR)
+         end
+      end,
+   })
+end, {
+   desc = "Build the current CMake project.",
+})
