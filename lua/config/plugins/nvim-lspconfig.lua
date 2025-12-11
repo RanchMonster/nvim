@@ -63,6 +63,7 @@ return {
             },
             lua_ls = {},
             html = {},
+            cmake = {},
             bashls = {},
             basedpyright = {
                on_attach = function(_, config)
