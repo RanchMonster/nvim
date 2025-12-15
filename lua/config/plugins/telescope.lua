@@ -8,6 +8,7 @@ return {
       require("telescope").setup({
          defaults = {
             -- border = false, -- disables all borders
+            hidden = true, -- hides the UI
          },
          extensions = {
             fzf = {},

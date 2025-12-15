@@ -82,12 +82,3 @@ end, "Quick git push")
 Key("n", "<leader><Down>", function()
    vim.cmd("Git pull")
 end, "Quick git pull")
-
--- DAP mappings
-Key("n", "<F5>", function() require "dap".continue() end, "DAP Continue")
-Key("n", "<F10>", function() require "dap".step_over() end, "DAP Step Over")
-Key("n", "<F11>", function() require "dap".step_into() end, "DAP Step Into")
-Key("n", "<F12>", function() require "dap".step_out() end, "DAP Step Out")
-Key("n", "<Leader>b", function() require "dap".toggle_breakpoint() end, "DAP Toggle Breakpoint")
--- I can't type backslash
-Key("i", "<F8>", "\\", "Types the backslash charecter")
