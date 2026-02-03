@@ -1,20 +1,6 @@
 return {
    {
       "neovim/nvim-lspconfig",
-      dependencies = {
-         {
-            "folke/lazydev.nvim",
-            ft = "lua",
-            opts = {
-               library = {
-                  { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-               },
-            },
-         },
-         {
-            "saghen/blink.cmp",
-         },
-      },
       opts = {
          servers = {
             ts_ls = {
@@ -111,7 +97,7 @@ return {
                root_dir = function(fname)
                   local util = require("lspconfig/util")
                   return util.root_pattern("composer.json", ".git")(fname)
-                      or util.path.dirname(fname)
+                      or vim.path.dirname(fname)
                end,
                settings = {
                   intelephense = {
@@ -266,7 +252,6 @@ return {
             end,
          })
          -- Final LSP setup
-         local lspconfig = require("lspconfig")
          local util = require("lspconfig/util")
          opts.servers.basedpyright.root_dir = util.find_git_ancestor or util.path.dirname
          for server, config in pairs(opts.servers) do
