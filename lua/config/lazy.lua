@@ -14,7 +14,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
    end
 end
 vim.opt.rtp:prepend(lazypath)
-
+local uv = vim.uv
 -- Setup lazy.nvim
 require("lazy").setup({
    spec = {

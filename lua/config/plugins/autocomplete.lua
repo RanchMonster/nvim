@@ -1,72 +1,120 @@
+-- return {
+--    {
+--       "folke/lazydev.nvim",
+--       ft = "lua", -- only load on lua files
+--       opts = {
+--          library = {
+--             "/home/Jacob/.config/lua-globals",
+--             -- See the configuration section for more details
+--             { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+--          },
+--       },
+--    },
+--    {
+--       "saghen/blink.cmp",
+--       dependencies = {
+--          "rafamadriz/friendly-snippets",
+--          {
+--             "folke/lazydev.nvim",
+--             ft = "lua", -- only load on lua files
+--             opts = {
+--                library = {
+--                   -- See the configuration section for more details
+--                   -- Load luvit types when the `vim.uv` word is found
+--                   { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+--                },
+--             },
+--          }
+--       },
+--       version = "v0.*",
+--       opts = {
+--          keymap = {
+--             preset = "default",
+--             ["<C-space>"] = { "accept" },
+--             ["<C-k>"] = {},
+--
+--          },
+--          appearance = {
+--             highlight_ns = vim.api.nvim_create_namespace('blink_cmp'),
+--             use_nvim_cmp_as_default = true,
+--             nerd_font_variant = "mono",
+--          },
+--          completion = {
+--             -- ghost_text = { enabled = true },
+--             menu = { border = 'rounded' },
+--             documentation = { auto_show = true, window = { border = 'rounded' } },
+--          },
+--
+--          signature = { enabled = true, window = { border = "rounded", show_documentation = true, } },
+--          sources = {
+--             default = { "lazydev", "lsp", "path", "snippets", "buffer", },
+--             providers = {
+--                lazydev = {
+--                   name = "LazyDev",
+--                   module = "lazydev.integrations.blink",
+--                   -- make lazydev completions top priority (see `:h blink.cmp`)
+--                },
+--             },
+--          },
+--       }
+--    },
+-- }
+
 return {
-   {
-      "folke/lazydev.nvim",
-      ft = "lua", -- only load on lua files
-      opts = {
-         library = {
-            -- Add these essential paths for proper Lua development
-            { path = "luvit-meta/library", words = { "vim%.uv" } },
-            { path = "lazy.nvim",          words = { "lazy" } },
-            -- Add your Neovim config path
-            vim.fn.stdpath("config"),
-            -- If you have custom Lua globals, add them here
-            -- { path = "/home/Jacob/.config/lua-globals" },
+   "saghen/blink.cmp",
+   version = "v0.*",
+   dependencies = {
+      "rafamadriz/friendly-snippets",
+      "L3MON4D3/LuaSnip", -- needed for snippets
+      {
+         "folke/lazydev.nvim",
+         ft = "lua",
+         opts = {
+            library = {
+               { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+            },
          },
       },
    },
-   {
-      "saghen/blink.cmp",
-      dependencies = {
-         "rafamadriz/friendly-snippets",
-         "folke/lazydev.nvim", -- Keep as dependency but remove duplicate config
-      },
-      version = "v0.*",
-      opts = {
-         keymap = {
-            preset = "default",
-            ["<C-space>"] = { "accept" },
-            ["<C-k>"] = {},
-         },
-         appearance = {
-            highlight_ns = vim.api.nvim_create_namespace('blink_cmp'),
-            use_nvim_cmp_as_default = true,
-            nerd_font_variant = "mono",
-         },
-         completion = {
-            ghost_text = { enabled = true },
-            menu = { border = 'rounded' },
-            documentation = { auto_show = true, window = { border = 'rounded' } },
-         },
-         signature = {
-            enabled = true,
-            window = {
-               border = "rounded",
-               show_documentation = true,
-            }
-         },
-         sources = {
-            default = { "lazydev", "lsp", "path", "snippets", "buffer" },
-            providers = {
-               lazydev = {
-                  name = "LazyDev",
-                  module = "lazydev.integrations.blink",
-                  -- Priority will be handled automatically
-               },
-            },
-         },
-      },
-      config = function(_, opts)
-         local blink = require("blink.cmp")
-         blink.setup(opts)
 
-         -- Ensure lazydev is properly integrated
-         require("lazydev").setup({
-            library = {
-               { path = "luvit-meta/library", words = { "vim%.uv" } },
-               { path = "lazy.nvim",          words = { "lazy" } },
-               vim.fn.stdpath("config"),
+   opts = {
+      keymap = {
+         preset = "default",
+         ["<C-Space>"] = { "accept" }, -- open completion
+         ["<CR>"] = { "fallback" },    -- accept item, fallback to default CR if menu not visible
+         ["<C-k>"] = {},               -- disabled as before
+      },
+
+      appearance = {
+         highlight_ns = vim.api.nvim_create_namespace("blink_cmp"),
+         nerd_font_variant = "mono",
+      },
+
+      completion = {
+         menu = { border = "rounded" },
+         documentation = {
+            auto_show = true,
+            window = { border = "rounded" },
+         },
+      },
+
+      signature = {
+         enabled = true,
+         window = {
+            border = "rounded",
+            show_documentation = true,
+         },
+      },
+
+      sources = {
+         default = { "lazydev", "lsp", "path", "snippets", "buffer" },
+         providers = {
+            lazydev = {
+               name = "LazyDev",
+               module = "lazydev.integrations.blink",
+               score_offset = 100, -- prioritize lua dev completions
             },
-         })
-      end
+         },
+      },
    },
 }
