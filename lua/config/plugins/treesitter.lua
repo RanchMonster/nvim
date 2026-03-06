@@ -7,11 +7,19 @@ return {
       treesitter.install({ 'rust', 'javascript', 'c', 'python' }) -- Add more as needed
       vim.api.nvim_create_autocmd('BufEnter', {
          callback = function()
-            local filetype = vim.bo.filetype
-            if vim.tbl_contains(treesitter.get_installed(), filetype) then
-               vim.treesitter.start()
-            elseif vim.tbl_contains(treesitter.get_available(), filetype) then
-               treesitter.install(filetype)
+            -- First, try to call treesitter.start() if it errors then try to install the parser if not already installed
+            local ok, parser = pcall(vim.treesitter.start)
+            if not ok then
+               local filetype = vim.bo.filetype
+               if vim.tbl_contains(treesitter.get_installed(), filetype) then
+                  vim.treesitter.start()
+               elseif vim.tbl_contains(treesitter.get_available(), filetype) then
+                  treesitter.install(filetype)
+                  local ok, parser = pcall(vim.treesitter.start)
+                  if not ok then
+                     vim.notify("Failed to install treesitter parser for " .. filetype)
+                  end
+               end
             end
          end,
       })
