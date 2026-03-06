@@ -11,6 +11,10 @@ return {
             local ok, parser = pcall(vim.treesitter.start)
             if not ok then
                local filetype = vim.bo.filetype
+               if filetype == "typescriptreact" or filetype == "tsx" then
+                  vim.bo.filetype =
+                  "typescript" -- If the filetype is typescriptreact or tsx then change it to typescript weird bug
+               end
                if vim.tbl_contains(treesitter.get_installed(), filetype) then
                   vim.treesitter.start()
                elseif vim.tbl_contains(treesitter.get_available(), filetype) then
