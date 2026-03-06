@@ -12,14 +12,13 @@ return {
             if not ok then
                local filetype = vim.bo.filetype
                if filetype == "typescriptreact" or filetype == "tsx" then
-                  vim.bo.filetype =
-                  "typescript" -- If the filetype is typescriptreact or tsx then change it to typescript weird bug
+                  local filetype = "typescript"
                end
                if vim.tbl_contains(treesitter.get_installed(), filetype) then
-                  vim.treesitter.start()
+                  local ok, parser = pcall(vim.treesitter.start, vim.api.nvim_get_current_buf(), filetype)
                elseif vim.tbl_contains(treesitter.get_available(), filetype) then
                   treesitter.install(filetype)
-                  local ok, parser = pcall(vim.treesitter.start)
+                  local ok, parser = pcall(vim.treesitter.start, vim.api.nvim_get_current_buf(), filetype)
                   if not ok then
                      vim.notify("Failed to install treesitter parser for " .. filetype)
                   end
