@@ -52,6 +52,7 @@ return {
             html = {},
             cmake = {},
             bashls = {},
+            gopls = {},
             java = {
                opts = {
                   setting = {
