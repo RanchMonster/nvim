@@ -29,5 +29,5 @@ end
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 require("config.lazy")
-require("mconfig")
+require("scripting")
 vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin" .. ":" .. vim.env.PATH
