@@ -1,6 +1,10 @@
 return {
    {
       "neovim/nvim-lspconfig",
+      dependencies = {
+         "williamboman/mason-lspconfig.nvim",
+         "mason-org/mason.nvim",
+      },
       opts = {
          servers = {
             ts_ls = {
@@ -47,12 +51,6 @@ return {
                   hostInfo = "neovim",
                },
             },
-            lua_ls = {},
-            sqls = {},
-            html = {},
-            cmake = {},
-            bashls = {},
-            gopls = {},
             java = {
                opts = {
                   setting = {
@@ -248,7 +246,7 @@ return {
                         },
                         enable = true,
                         typeHints = {
-                           enable = true,
+                           enable = truacknoldgee,
                         },
                      },
                      parameterHints = {
@@ -267,8 +265,6 @@ return {
                   },
                },
             },
-            cssls = {},
-            asm_lsp = {},
             clangd = {
                cmd = { vim.fn.stdpath("data") .. "/mason/bin/clangd" }, -- or just "clangd" if in PATH
                filetypes = { "c", "cpp", "hpp", "h", "objc", "objcpp", "cuda", "proto" },
@@ -336,20 +332,34 @@ return {
                end
             end,
          })
+
+
          vim.api.nvim_create_autocmd("BufEnter", {
             group = "nvim-lspconfig",
             callback = function()
                vim.lsp.inlay_hint.enable(true)
             end,
          })
-         -- Final LSP setup
-         local util = require("lspconfig/util")
-         opts.servers.basedpyright.root_dir = util.find_git_ancestor or util.path.dirname
-         for server, config in pairs(opts.servers) do
+
+         if opts.servers.basedpyright then
+            local util = require("lspconfig/util")
+            opts.servers.basedpyright.root_dir = util.find_git_ancestor or util.path.dirname
+         end
+
+         -- Ensure all configured servers are installed
+         local configured_servers = vim.tbl_keys(opts.servers)
+         local mason_lspconfig = require("mason-lspconfig")
+         mason_lspconfig.setup({ ensure_installed = configured_servers })
+
+
+
+         local installed = mason_lspconfig.get_installed_servers()
+
+         for _, server in ipairs(installed) do
+            local config = opts.servers[server] or {}
             config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
             vim.lsp.enable(server, true)
             vim.diagnostic.enable(true)
-            -- lspconfig[server].setup(config)
          end
       end
    },
