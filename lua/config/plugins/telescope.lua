@@ -80,6 +80,8 @@ return {
       require("telescope").load_extension("fzf")
       Key("n", "<leader>ff", function() builtin.find_files({ find_command = find_command }) end,
          "( Telescope ) Find Files")
+      Key("n", "<leader>fa", function() builtin.find_files({ hidden = true }) end,
+         "( Telescope ) Find all files in a project even if hidden or ignored")
       Key("n", "<leader>fh", builtin.help_tags, "( Telescope ) Find Help")
       Key("n", "<leader>Gf", builtin.git_files, "( Telescope ) Find Git Files")
       Key("n", "<leader>Gb", builtin.git_branches, "( Telescope ) Find Git Branches")
