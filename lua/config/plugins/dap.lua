@@ -103,11 +103,6 @@ return {
       },
    },
    config = function()
-      -- Add the missing Key function
-      local function Key(mode, key, func, desc)
-         vim.keymap.set(mode, key, func, { desc = desc, silent = true })
-      end
-
       vim.api.nvim_create_autocmd("BufRead", {
          once = true,
          callback = function()
