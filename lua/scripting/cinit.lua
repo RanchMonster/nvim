@@ -1,7 +1,51 @@
+-- clang-format config that mimics rustfmt's style as closely as C/C++ allows.
+local clang_format = [[
+---
+# Closest approximation of rustfmt's defaults for C/C++ code.
+BasedOnStyle: LLVM
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+ColumnLimit: 100
+ContinuationIndentWidth: 4
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterCaseLabel: false
+  AfterClass: false
+  AfterControlStatement: Never
+  AfterEnum: false
+  AfterFunction: false
+  AfterNamespace: true
+  AfterObjCDeclaration: false
+  AfterStruct: false
+  AfterUnion: false
+  BeforeCatch: false
+  BeforeElse: false
+  BeforeLambdaBody: false
+  IndentBraces: false
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: false
+BinPackArguments: false
+BinPackParameters: false
+AllowAllArgumentsOnNextLine: true
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowAllConstructorInitializersOnNextLine: true
+AlignAfterOpenBracket: BlockIndent
+IndentCaseLabels: true
+PointerAlignment: Right
+DerivePointerAlignment: false
+SortIncludes: CaseSensitive
+]]
+
 local function bootstrap_cmake_project(project_name, project_type)
    local cwd = vim.fn.getcwd()
    local src_dir = cwd .. "/src"
    local cmake_path = cwd .. "/CMakeLists.txt"
+   local clang_format_path = cwd .. "/.clang-format"
    local main_file = src_dir .. (project_type == "cpp" and "/main.cpp" or "/main.c")
 
    if vim.fn.filereadable(cmake_path) == 1 then
@@ -46,6 +90,9 @@ add_executable(%s ${SOURCES})
 ]], project_name, lang, std, ext, project_name)
 
    vim.fn.writefile(vim.fn.split(cmake_code, "\n"), cmake_path)
+
+   -- Write .clang-format (Rust/rustfmt-inspired style)
+   vim.fn.writefile(vim.fn.split(clang_format, "\n"), clang_format_path)
 
    vim.notify(string.format("✅ Bootstrapped %s CMake project '%s'", project_type:upper(), project_name),
       vim.log.levels.INFO)
