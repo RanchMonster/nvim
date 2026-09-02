@@ -1,44 +1,106 @@
 -- clang-format config that mimics rustfmt's style as closely as C/C++ allows.
 local clang_format = [[
 ---
-# Closest approximation of rustfmt's defaults for C/C++ code.
+# Base style to inherit defaults from
 BasedOnStyle: LLVM
+
+
+# ============================================================================
+# Indentation
+# ============================================================================
+
 IndentWidth: 4
 TabWidth: 4
-UseTab: Never
-ColumnLimit: 100
-ContinuationIndentWidth: 4
+UseTab: false
+
+# Indent everything inside namespaces, including nested namespaces.
+NamespaceIndentation: All
+
+# Keep normal C/C++ indentation behavior inside classes/functions/etc.
+IndentCaseLabels: true
+IndentGotoLabels: true
+
+# ============================================================================
+# Code layout
+# ============================================================================
+
+ColumnLimit: 80
+MaxEmptyLinesToKeep: 1
+
+# ============================================================================
+# Braces
+# ============================================================================
+
 BreakBeforeBraces: Custom
-BraceWrapping:
-  AfterCaseLabel: false
-  AfterClass: false
-  AfterControlStatement: Never
-  AfterEnum: false
-  AfterFunction: false
-  AfterNamespace: true
-  AfterObjCDeclaration: false
-  AfterStruct: false
-  AfterUnion: false
-  BeforeCatch: false
-  BeforeElse: false
-  BeforeLambdaBody: false
-  IndentBraces: false
-  SplitEmptyFunction: false
-  SplitEmptyRecord: false
-AllowShortFunctionsOnASingleLine: Empty
-AllowShortIfStatementsOnASingleLine: Never
-AllowShortLoopsOnASingleLine: false
-AllowShortCaseLabelsOnASingleLine: false
+
+# BraceWrapping:
+#   AfterClass: true
+#   AfterControlStatement: false
+#   AfterFunction: true
+#   AfterNamespace: false
+#   AfterStruct: false
+#   AfterUnion: true
+#   AfterEnum: true
+#   BeforeElse: false
+#   BeforeCatch: false
+
+# ============================================================================
+# Alignment
+# ============================================================================
+
+# Don't vertically align things like Rustfmt tends not to.
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+AlignConsecutiveBitFields: false
+AlignConsecutiveMacros: false
+AlignTrailingComments: false
+
+PointerAlignment: Left
+ReferenceAlignment: Left
+DerivePointerAlignment: false
+
+# ============================================================================
+# Spacing
+# ============================================================================
+
+SpaceAfterCStyleCast: false
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeParens: ControlStatements
+SpaceBeforeCpp11BracedList: false
+SpaceInEmptyBlock: false
+
+# ============================================================================
+# Functions / arguments
+# ============================================================================
+
 BinPackArguments: false
 BinPackParameters: false
-AllowAllArgumentsOnNextLine: true
-AllowAllParametersOfDeclarationOnNextLine: true
-AllowAllConstructorInitializersOnNextLine: true
-AlignAfterOpenBracket: BlockIndent
-IndentCaseLabels: true
-PointerAlignment: Right
-DerivePointerAlignment: false
+
+# ============================================================================
+# Short constructs
+# ============================================================================
+
+AllowShortBlocksOnASingleLine: false
+AllowShortFunctionsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: false
+
+
+# ============================================================================
+# Includes
+# ============================================================================
+
 SortIncludes: CaseSensitive
+IncludeBlocks: Regroup
+
+# ============================================================================
+# Miscellaneous
+# ============================================================================
+
+Cpp11BracedListStyle: true
+ReflowComments: true
+SpacesBeforeTrailingComments: 2
 ]]
 
 local function bootstrap_cmake_project(project_name, project_type)
