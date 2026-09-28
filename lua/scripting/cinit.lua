@@ -182,7 +182,6 @@ end
 local function init_git()
    vim.fn.system("git init")
    vim.fn.system("git add .")
-   vim.fn.system("git commit -m 'chore: init CMake project via neovim'")
 end
 
 vim.api.nvim_create_user_command("CMakeInit", function(opts)
