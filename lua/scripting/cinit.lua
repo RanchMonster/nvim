@@ -106,6 +106,8 @@ SpacesBeforeTrailingComments: 2
 local function bootstrap_cmake_project(project_name, project_type)
    local cwd = vim.fn.getcwd()
    local src_dir = cwd .. "/src"
+   local lib_dir = cwd .. "/lib"
+   local inc_dir = cwd .. "/include"
    local cmake_path = cwd .. "/CMakeLists.txt"
    local clang_format_path = cwd .. "/.clang-format"
    local main_file = src_dir .. (project_type == "cpp" and "/main.cpp" or "/main.c")
@@ -116,6 +118,8 @@ local function bootstrap_cmake_project(project_name, project_type)
    end
 
    vim.fn.mkdir(src_dir, "p")
+   vim.fn.mkdir(lib_dir, "p")
+   vim.fn.mkdir(inc_dir, "p")
 
    -- Write main file
    local main_code = project_type == "cpp" and [[
@@ -149,7 +153,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.%s)
 add_executable(%s ${SOURCES})
-]], project_name, lang, std, ext, project_name)
+target_include_directories(%s PUBLIC include)
+]], project_name, lang, std, ext, project_name, project_name)
 
    vim.fn.writefile(vim.fn.split(cmake_code, "\n"), cmake_path)
 
@@ -160,33 +165,35 @@ add_executable(%s ${SOURCES})
       vim.log.levels.INFO)
 end
 
+
+local function create_gitignore(project_name)
+   local gitignore_path = vim.fn.getcwd() .. "/.gitignore"
+   local gitignore_code = string.format([[
+   # Build artifacts
+   build/
+   %s
+   # Generated files
+   .clang-format
+   CMakeLists.txt
+]], project_name)
+   vim.fn.writefile(vim.fn.split(gitignore_code, "\n"), gitignore_path)
+end
+
+local function init_git()
+   vim.fn.system("git init")
+   vim.fn.system("git add .")
+   vim.fn.system("git commit -m 'chore: init CMake project via neovim'")
+end
+
 vim.api.nvim_create_user_command("CMakeInit", function(opts)
    local project = opts.fargs[1] or vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
    local type_flag = opts.fargs[2] or "c" -- default to C
    local ptype = (type_flag == "cpp" or type_flag == "cxx") and "cpp" or "c"
 
    bootstrap_cmake_project(project, ptype)
+   create_gitignore(project)
+   init_git()
 end, {
    nargs = "*",
    desc = "Bootstrap a basic C or C++ CMake project. Usage: :CMakeInit [project_name] [c|cpp]",
-})
-vim.api.nvim_create_user_command("CBuild", function(opts)
-   local build_cmd = "cmake --build . --config Debug"
-   vim.fn.jobstart(build_cmd, {
-      on_stdout = function(_, data)
-         print(data)
-      end,
-      on_stderr = function(_, data)
-         print(data)
-      end,
-      on_exit = function(_, code)
-         if code == 0 then
-            vim.notify("✅ Built successfully.", vim.log.levels.INFO)
-         else
-            vim.notify("❌ Build failed.", vim.log.levels.ERROR)
-         end
-      end,
-   })
-end, {
-   desc = "Build the current CMake project.",
 })
