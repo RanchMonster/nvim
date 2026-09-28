@@ -106,7 +106,6 @@ SpacesBeforeTrailingComments: 2
 local function bootstrap_cmake_project(project_name, project_type)
    local cwd = vim.fn.getcwd()
    local src_dir = cwd .. "/src"
-   local lib_dir = cwd .. "/lib"
    local inc_dir = cwd .. "/include"
    local cmake_path = cwd .. "/CMakeLists.txt"
    local clang_format_path = cwd .. "/.clang-format"
@@ -118,7 +117,6 @@ local function bootstrap_cmake_project(project_name, project_type)
    end
 
    vim.fn.mkdir(src_dir, "p")
-   vim.fn.mkdir(lib_dir, "p")
    vim.fn.mkdir(inc_dir, "p")
 
    -- Write main file
